@@ -528,7 +528,7 @@ botTokens.forEach(function(token) {
 	});
 	console.log('>>> 400 <<<')
 	console.log('port + tokenIndex: ' + (port + tokenIndex))
-	port += tokenIndex
+	// port += tokenIndex
 	server.listen(port, function() {
 	// server.listen(port, function() {
 	  // eslint-disable-next-line
