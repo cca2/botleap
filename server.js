@@ -517,11 +517,6 @@ botTokens.forEach(function(token) {
 		// })
 	});
 	
-	web.oauth.access(function(err, info) {
-		console.log('>>> OAUTH.ACCESS <<<')
-		console.log(info)
-	})
-	
 	web.team.info(function(err, info) {
 		if (err) {
 			console.log('aqui erro:', err);
