@@ -27,11 +27,11 @@ var natural_language_classifier = watson.natural_language_classifier({
   version: 'v1'
 });
 
-var params = {
-  language: 'pt',
-  name: 'Leap Comments Classifier',
-  training_data: fs.createReadStream('../../Downloads/leap_categories_train.csv')
-};
+// var params = {
+//   language: 'pt',
+//   name: 'Leap Comments Classifier',
+//   training_data: fs.createReadStream('../../Downloads/leap_categories_train.csv')
+// };
 
 //kindOfCommentClassifier é um classificador de feedbacks
 var kindOfCommentClassifier = 'ebd15ex229-nlc-53182'
