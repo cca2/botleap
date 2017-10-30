@@ -46,10 +46,8 @@ var messageChannel = 'D74ANKXPX'
 
 
 var messageChannels = ['D74ANKXPX', 'D7F9NH9N1', 'D7FLLKPHP']
-// var botTokens = [process.env.SLACK_BOT_TOKEN, 'xoxb-253188456194-pvZYyuTKlHq4HtVd0t2KdNB1', 'xoxb-255302903559-laVVZjrV6XmGzI2cCDCLdNlS']
-var botTokens = [process.env.SLACK_BOT_TOKEN, 'xoxb-253188456194-pvZYyuTKlHq4HtVd0t2KdNB1']
+var botTokens = [process.env.SLACK_BOT_TOKEN, process.env.SLACK_BOT_TOKEN1]
 //Este token abaixo é para ser usado em Empreendimentos
-// bot_token = 'xoxb-253156928353-uybqWeLEbAtYdWdwckSjTnth'
 // bot_name = 'leapempreendimentos'
 // messageChannel = 'D7F9NH9N1'
 
