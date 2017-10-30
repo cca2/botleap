@@ -52,6 +52,7 @@ var botTokens = [process.env.SLACK_BOT_TOKEN, 'xoxb-253188456194-pvZYyuTKlHq4HtV
 // messageChannel = 'D7F9NH9N1'
 
 console.log('>>> SLACK_BOT_TOKEN <<<')
+console.log(port)
 // console.log(bot_token)
 
 var tokenIndex = 0
