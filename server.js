@@ -26,7 +26,8 @@ require('dotenv').config({silent: true});
 
 var server = require('./app');
 
-var port = process.env.PORT || process.env.VCAP_APP_PORT || 3000;
+// var port = process.env.PORT || process.env.VCAP_APP_PORT || 3000;
+var port = 3000
 
 var RtmClient = require('@slack/client').RtmClient;
 var RTM_EVENTS = require('@slack/client').RTM_EVENTS;
@@ -494,6 +495,7 @@ botTokens.forEach(function(token) {
 	});
 	console.log('>>> 400 <<<')
 	console.log('port + tokenIndex: ' + (port + tokenIndex))
+	// server.listen(port + tokenIndex, function() {
 	server.listen(port + tokenIndex, function() {
 	  // eslint-disable-next-line
 	  console.log('Server running on port: %d', port + tokenIndex);
