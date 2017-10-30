@@ -114,4 +114,6 @@ app.get('/auth/redirect', (req, res) =>{
     })
 })
 
+console.log('>>>> APP.JS <<<<')
+
 module.exports = app;

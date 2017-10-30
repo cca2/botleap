@@ -46,7 +46,7 @@ var messageChannel = 'D74ANKXPX'
 
 
 // var messageChannels = ['D74ANKXPX', 'D7F9NH9N1', 'D7FLLKPHP']
-var botTokens = [process.env.SLACK_BOT_TOKEN]
+var botTokens = [process.env.SLACK_BOT_TOKEN, process.env.SLACK_BOT_TOKEN1]
 //Este token abaixo é para ser usado em Empreendimentos
 // bot_name = 'leapempreendimentos'
 // messageChannel = 'D7F9NH9N1'
@@ -528,8 +528,8 @@ botTokens.forEach(function(token) {
 	});
 	console.log('>>> 400 <<<')
 	console.log('port + tokenIndex: ' + (port + tokenIndex))
-	// server.listen(port + tokenIndex, function() {
-	server.listen(port, function() {
+	server.listen(port + tokenIndex, function() {
+	// server.listen(port, function() {
 	  // eslint-disable-next-line
 	  console.log('Server running on port: %d', port + tokenIndex);
 	  rtm.start();
