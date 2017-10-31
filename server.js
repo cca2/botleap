@@ -46,7 +46,8 @@ var messageChannel = 'D74ANKXPX'
 
 
 // var messageChannels = ['D74ANKXPX', 'D7F9NH9N1', 'D7FLLKPHP']
-var botTokens = [process.env.SLACK_BOT_TOKEN, process.env.SLACK_BOT_TOKEN1]
+// var botTokens = [process.env.SLACK_BOT_TOKEN, process.env.SLACK_BOT_TOKEN1]
+var botTokens = [process.env.SLACK_BOT_TOKEN]
 //Este token abaixo é para ser usado em Empreendimentos
 // bot_name = 'leapempreendimentos'
 // messageChannel = 'D7F9NH9N1'
@@ -528,7 +529,7 @@ botTokens.forEach(function(token) {
 	});
 	console.log('>>> 400 <<<')
 	console.log('port + tokenIndex: ' + (port + tokenIndex))
-	// port += tokenIndex
+	port += tokenIndex
 	server.listen(port, function() {
 	// server.listen(port, function() {
 	  // eslint-disable-next-line
