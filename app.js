@@ -92,8 +92,11 @@ function updateMessage(input, response) {
   return response;
 }
 
+app.get('/test', (req, res) => {
+  res.send("teste")
+})
 
-app.get('/auth/redirect', (req, res) =>{
+app.get('/auth/redirect', (req, res) => {
     var options = {
         uri: 'https://slack.com/api/oauth.access?code='
             +req.query.code+
