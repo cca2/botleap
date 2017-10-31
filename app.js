@@ -92,7 +92,7 @@ function updateMessage(input, response) {
   return response;
 }
 
-app.get('/auth/redirect?code=(.*)', (req, res) => {
+app.get('/auth/redirect?code=', (req, res) => {
   console.log('>>> /auth/redirect')
   console.log(req)
     var options = {
