@@ -17,6 +17,8 @@
 'use strict';
 
 var express = require('express'); // app server
+var request = require('request') //app request
+
 var bodyParser = require('body-parser'); // parser for post requests
 var Conversation = require('watson-developer-cloud/conversation/v1'); // watson sdk
 
@@ -94,26 +96,24 @@ function updateMessage(input, response) {
 
 app.get('/auth/redirect', (req, res) => {
   console.log('>>> /auth/redirect')
-  // console.log(req)
-  res.send('/auth/redirect')
-  //   var options = {
-  //       uri: 'https://slack.com/api/oauth.access?code='
-  //           +req.query.code+
-  //           '&client_id='+process.env.CLIENT_ID+
-  //           '&client_secret='+process.env.CLIENT_SECRET+
-  //           '&redirect_uri='+process.env.REDIRECT_URI,
-  //       method: 'GET'
-  //   }
-  //   request(options, (error, response, body) => {
-  //       var JSONresponse = JSON.parse(body)
-  //       if (!JSONresponse.ok){
-  //           console.log(JSONresponse)
-  //           res.send("Error encountered: \n"+JSON.stringify(JSONresponse)).status(200).end()
-  //       }else{
-  //           console.log(JSONresponse)
-  //           res.send("Success!")
-  //       }
-  //   })
+  var options = {
+      uri: 'https://slack.com/api/oauth.access?code='
+          +req.query.code+
+          '&client_id='+process.env.CLIENT_ID+
+          '&client_secret='+process.env.CLIENT_SECRET+
+          '&redirect_uri='+process.env.REDIRECT_URI,
+      method: 'GET'
+  }
+  request(options, (error, response, body) => {
+      var JSONresponse = JSON.parse(body)
+      if (!JSONresponse.ok){
+          console.log(JSONresponse)
+          res.send("Error encountered: \n"+JSON.stringify(JSONresponse)).status(200).end()
+      }else{
+          console.log(JSONresponse)
+          res.send("Success!")
+      }
+  })
 })
 
 console.log('>>>> APP.JS <<<<')
