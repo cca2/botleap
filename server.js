@@ -270,8 +270,20 @@ slackBot.activateSlackBots().then(function(slackBotTokens) {
 									  				var commentsByDates = {}
 
 									  				commentsList.forEach(function(commentsByDate) {
-									  					var localeDate = new Date(commentsByDate.date).toLocaleDateString('pt-BR')
-									  					console.log('>>> 505')
+									  					var localeDate = new Date(commentsByDate.date)
+
+									  					var dStr = localeDate.getDate()
+									  					if (dStr < 10)
+									  						dStr = '0' + dStr
+
+									  					var mStr = localeDate.getMonth() + 1
+									  					if (mStr < 10)
+									  						mStr = '0' + mStr
+									  					
+									  					var yStr = localeDate.getFullYear()
+
+									  					localeDate = dStr + '/' + mStr + '/' + yStr
+
 									  					console.log(localeDate)
 
 									  					if (!commentsByDates[localeDate]) {
