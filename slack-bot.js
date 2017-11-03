@@ -42,7 +42,8 @@ var SlackBot = (function() {
     activateSlackBot: function(teamID, slackBotToken) {
       console.log('>>> 800')
       var updates = {}
-      updates['slack_teams'][teamID]['slackBotToken'] = slackBotToken
+
+      updates['slack_teams/' + teamID + '/slackBotToken'] = slackBotToken
       return firebase.database().ref().update(updates).then(function() {
         console.log('>>> 810 <<<')
         })
