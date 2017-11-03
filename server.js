@@ -271,6 +271,8 @@ slackBot.activateSlackBots().then(function(slackBotTokens) {
 
 									  				commentsList.forEach(function(commentsByDate) {
 									  					var localeDate = new Date(commentsByDate.date).toLocaleDateString('pt-BR')
+									  					console.log('>>> 505')
+									  					console.log(localeDate)
 
 									  					if (!commentsByDates[localeDate]) {
 									  						commentsByDates[localeDate] = {}
@@ -299,15 +301,6 @@ slackBot.activateSlackBots().then(function(slackBotTokens) {
 										  						}
 									  						})
 									  					})
-									  					// comment.compliments.forEach(function(compliment) {
-									  					// 	commentsByDates[localeDate]['compliments'].push({author: comment.author, comment: compliment})
-									  					// })			  		
-									  					// comment.questions.forEach(function(question) {
-									  					// 	commentsByDates[localeDate]['questions'].push({author: comment.author, comment: question})
-									  					// })			  					
-									  					// comment.suggestions.forEach(function(suggestion) {
-									  					// 	commentsByDates[localeDate]['suggestions'].push({author: comment.author, comment: suggestion})
-									  					// })			  					
 									  				})
 
 									  				Object.keys(commentsByDates).forEach(function(date) {
