@@ -18,6 +18,7 @@
 
 var express = require('express'); // app server
 var request = require('request') //app request
+var SlackBot = require('./slack-bot')
 
 var bodyParser = require('body-parser'); // parser for post requests
 var Conversation = require('watson-developer-cloud/conversation/v1'); // watson sdk
@@ -114,7 +115,7 @@ app.get('/auth/redirect', (req, res) => {
           var teamID = JSONresponse.team_id
           var slackBotToken = JSONresponse.bot.bot_access_token
           console.log(slackBotToken)
-          // SlackBot.activateSlackBotToken(teamID, slackBotToken)
+          SlackBot.activateSlackBotToken(teamID, slackBotToken)
           res.send("Success!")
       }
   })
