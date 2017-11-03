@@ -114,7 +114,7 @@ var SlackBot = (function() {
               }else if (context.action == 'action_test') {
                 context.action =  ''
                 // Leap.downloadCSVFile()
-                Leap.test()
+                // Leap.test()
                 web.chat.postMessage(message.channel, response.output.text[0], true, function(err, messageResponse) {
                   if (err) {
 
@@ -122,6 +122,24 @@ var SlackBot = (function() {
 
                   }
                 })
+              }else if (context.action == 'action_include_member_in_startup') {
+                context.action = ''
+                console.log('>>> 800')
+                var memberToAddId = context.memberToAddId
+                var startupName = context.startupName
+                if (memberToAddId) {
+                  memberToAddId = memberToAddId.substring(2,11)
+                  console.log(memberToAddId)
+                  Leap.includeMemberInStartup(slackTeamId, startupName, memberToAddId).then(function() {
+                    web.chat.postMessage(message.channel, response.output.text[0], true, function(err, messageResponse) {
+                      if (err) {
+
+                      }else {
+
+                      }
+                    })                                                  
+                  })
+                }
               }else if (context.action == 'action_show_startup_evaluation') {
                 context.action = ''
                 web.chat.postMessage(message.channel, response.output.text[0], true, function(err, messageResponse) {
@@ -134,35 +152,35 @@ var SlackBot = (function() {
               }else if (context.action == 'action_list_entrepreneurs') {
                 context.action = ''
 
-              web.team.info(function(err, info) {
-                if (err) {
-                  console.log('erro:', err);
-                }else {
-                  console.log('team info: ', info);
-                  slackTeamId = info.team.id
-                  web.users.list(function(err, list) {
-                    if (err) {
+                web.team.info(function(err, info) {
+                  if (err) {
+                    console.log('erro:', err);
+                  }else {
+                    console.log('team info: ', info);
+                    slackTeamId = info.team.id
+                    web.users.list(function(err, list) {
+                      if (err) {
 
-                    }else {
-                      var slackMembersDict = {}
-                      var members = list.members
-                        var attachments = []
-                      for (var i = 0; i < members.length; i++) {
-                        if (members[i].profile.email) {
-                          var member = {
-                            name: members[i].profile.real_name,
-                            slackName: members[i].profile.display_name,
-                            email: members[i].profile.email
-                          }     
-                          slackMembersDict[members[i].id] = member
-                              var attachment = {
-                                  "title": member.name,
-                                  "text": member.email,
-                                  "color": "#7CD197"
-                              }
-                              attachments.push(attachment)                        
+                      }else {
+                        var slackMembersDict = {}
+                        var members = list.members
+                          var attachments = []
+                        for (var i = 0; i < members.length; i++) {
+                          if (members[i].profile.email) {
+                            var member = {
+                              name: members[i].profile.real_name,
+                              slackName: members[i].profile.display_name,
+                              email: members[i].profile.email
+                            }     
+                            slackMembersDict[members[i].id] = member
+                                var attachment = {
+                                    "title": member.name,
+                                    "text": member.email,
+                                    "color": "#7CD197"
+                                }
+                                attachments.push(attachment)                        
+                          }
                         }
-                      }
 
                         web.chat.postMessage(message.channel, response.output.text[0], {as_user: false, attachments: attachments}, function(err, messageResponse) {
                           if (err) {
@@ -171,11 +189,10 @@ var SlackBot = (function() {
 
                           }
                         })              
-
-                    }
-                  })
-                }
-              });
+                      }
+                    })
+                  }
+                });
               }else if (context.action == 'action_list_startups') {
                 context.action = ''
                 var startupsList = Leap.listStartups(slackTeamId)
@@ -410,7 +427,6 @@ var SlackBot = (function() {
                 console.log('>>> 130 <<<')
                 context.action = ''
                 Leap.listFounders(slackTeamId, context.startupName).then(function(foundersList) {
-                  console.log(foundersList)
                   var attachments = []
                   for (var i = 0; i < foundersList.length; i++) {
                       var attachment = {

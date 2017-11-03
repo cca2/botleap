@@ -539,6 +539,13 @@ var Leap = (function() {
 				return null
 		},
 
+		includeMemberInStartup: function(teamId, startupName, memberId) {
+			var startupId = startupsIdsByName[startupName]
+			var updates = {}
+			updates['/startups/' + startupId + '/founders/' + memberId] = {'active': true}
+			return firebase.database().ref().update(updates)
+		},
+
 		createStartup: function(teamId, startupName, founderId) {
 			var newStartup = {
 				name: startupName,
@@ -724,7 +731,7 @@ var Leap = (function() {
 
 		listFeedbacks: function(startupName) {
 			var startupId = startupsIdsByName[startupName]
-			var commentsRef = database.ref('startups/' + startupId + '/feedbacks').orderByKey().limitToLast(10)
+			var commentsRef = database.ref('startups/' + startupId + '/feedbacks').orderByKey().limitToLast(1)
 			return commentsRef.once('value').then(function(snapshot) {
   				var commentsList = []
   				var commentsDict = snapshot.val()
@@ -802,10 +809,6 @@ var Leap = (function() {
 	  					foundersList.push(founder)
 	  				})
 				}
-				console.log('>>> 400 <<<')
-				console.log(membersDict)
-				console.log(founders)
-				console.log(foundersList)
   				return foundersList
   			})
 		},
