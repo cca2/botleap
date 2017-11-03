@@ -114,8 +114,6 @@ app.get('/auth/redirect', (req, res) => {
           console.log(JSONresponse)
           var teamID = JSONresponse.team_id
           var slackBotToken = JSONresponse.bot.bot_access_token
-          console.log(slackBotToken)
-          console.log(slackBot)
           slackBot.activateSlackBot(teamID, slackBotToken)
           res.send("Success!")
       }
