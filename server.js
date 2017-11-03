@@ -40,8 +40,7 @@ slackBot.activateSlackBots().then(function(slackBotTokens) {
 	var port = process.env.PORT || process.env.VCAP_APP_PORT || 3000;
 
 	server.listen(port, function() {
-	  console.log('Server running on port: %d', port);
-	  // rtm.start();
+	  	console.log('Server running on port: %d', port);
 		slackBotTokens.forEach(function(token) {
 			var rtm = new RtmClient(token);
 			var web = new WebClient(token);
@@ -71,10 +70,6 @@ slackBot.activateSlackBots().then(function(slackBotTokens) {
 			// });
 
 			rtm.on(RTM_EVENTS.MESSAGE, function handleRtmMessage(message) {
-				console.log('>>> message <<<')
-				console.log(message)
-				console.log(message.username)
-
 				var workspace = process.env.WORKSPACE_ID || '<workspace-id>';
 				var payload = {
 					workspace_id: workspace,
@@ -136,8 +131,7 @@ slackBot.activateSlackBots().then(function(slackBotTokens) {
 									  		}else if (context.action == 'action_test') {
 									  			context.action =  ''
 									  			// Leap.downloadCSVFile()
-									  			// Leap.saveAndClassifyComments()
-									  			Leap.test()  			
+									  			Leap.test()
 										    	web.chat.postMessage(message.channel, response.output.text[0], true, function(err, messageResponse) {
 										    		if (err) {
 
@@ -252,8 +246,10 @@ slackBot.activateSlackBots().then(function(slackBotTokens) {
 									  			// }
 									  		}else if (context.action == 'action_classify_comments') {
 									  			context.action = ''
-									  			Leap.classifyComments(context.startupName).then(function(commentsList) {
+									  			// Leap.classifyComments(context.startupName).then(function(commentsList) {
+									  			Leap.listFeedbacks(context.startupName).then(function(commentsList) {
 									  				console.log('>>> 500 <<<')
+									  				console.log(commentsList)
 
 									  				var attachments = []
 
@@ -271,34 +267,53 @@ slackBot.activateSlackBots().then(function(slackBotTokens) {
 												        attachments.push(attachment)
 									  				}
 
-									  				var commentsByDate = {}
+									  				var commentsByDates = {}
 
-									  				commentsList.forEach(function(comment) {
-									  					var localeDate = new Date(comment.date).toLocaleDateString('pt-BR')
-									  					if (!commentsByDate[localeDate]) {
-									  						commentsByDate[localeDate] = {}
-									  						commentsByDate[localeDate]['compliments'] = []			  						
-									  						commentsByDate[localeDate]['questions'] = []			  						
-									  						commentsByDate[localeDate]['critics'] = []			  						
-									  						commentsByDate[localeDate]['suggestions'] = []			  						
+									  				commentsList.forEach(function(commentsByDate) {
+									  					var localeDate = new Date(commentsByDate.date).toLocaleDateString('pt-BR')
+
+									  					if (!commentsByDates[localeDate]) {
+									  						commentsByDates[localeDate] = {}
+									  						commentsByDates[localeDate]['compliments'] = []			  						
+									  						commentsByDates[localeDate]['questions'] = []			  						
+									  						commentsByDates[localeDate]['critics'] = []			  						
+									  						commentsByDates[localeDate]['suggestions'] = []			  						
 									  					}
-									  					comment.compliments.forEach(function(compliment) {
-									  						commentsByDate[localeDate]['compliments'].push({author: comment.author, comment: compliment})
-									  					})			  		
-									  					comment.questions.forEach(function(question) {
-									  						commentsByDate[localeDate]['questions'].push({author: comment.author, comment: question})
-									  					})			  					
-									  					comment.critics.forEach(function(critic) {
-									  						commentsByDate[localeDate]['critics'].push({author: comment.author, comment: critic})
-									  					})			  					
-									  					comment.suggestions.forEach(function(suggestion) {
-									  						commentsByDate[localeDate]['suggestions'].push({author: comment.author, comment: suggestion})
-									  					})			  					
+
+									  					var commentsByAuthors = commentsByDate.authors
+									  					console.log('>>> 510 <<<')
+
+									  					Object.keys(commentsByAuthors).forEach(function(commentKey) {
+									  						var commentsByAuthor = commentsByAuthors[commentKey]
+									  						Object.keys(commentsByAuthor).forEach(function(commentKey) {
+									  							var comment = commentsByAuthor[commentKey]
+										  						console.log(comment)
+										  						if (comment.topClass == 'CRITICA') {
+												  					commentsByDates[localeDate]['critics'].push({author: commentKey, comment: comment})
+										  						}else if (comment.topClass == 'ELOGIO') {
+												  					commentsByDates[localeDate]['compliments'].push({author: commentKey, comment: comment})
+										  						}else if (comment.topClass == 'SUGESTAO') {
+												  					commentsByDates[localeDate]['suggestions'].push({author: commentKey, comment: comment})
+										  						}else if (comment.topClass == 'PERGUNTA') {
+												  					commentsByDates[localeDate]['questions'].push({author: commentKey, comment: comment})
+										  						}
+									  						})
+									  					})
+									  					// comment.compliments.forEach(function(compliment) {
+									  					// 	commentsByDates[localeDate]['compliments'].push({author: comment.author, comment: compliment})
+									  					// })			  		
+									  					// comment.questions.forEach(function(question) {
+									  					// 	commentsByDates[localeDate]['questions'].push({author: comment.author, comment: question})
+									  					// })			  					
+									  					// comment.suggestions.forEach(function(suggestion) {
+									  					// 	commentsByDates[localeDate]['suggestions'].push({author: comment.author, comment: suggestion})
+									  					// })			  					
 									  				})
 
-									  				Object.keys(commentsByDate).forEach(function(date) {
-									  					var dateComments = commentsByDate[date]
-									  					console.log(dateComments)
+									  				Object.keys(commentsByDates).forEach(function(date) {
+									  					var dateComments = commentsByDates[date]
+									  					console.log('>>> 700 <<<')
+									  					console.log(date)
 												        var attachment = {
 												        	"title": "Feedbacks em " + date,
 												            "color": "#181818"
@@ -362,7 +377,6 @@ slackBot.activateSlackBots().then(function(slackBotTokens) {
 													        }
 													        attachments.push(suggestionsAttachment)
 													        suggestions.forEach(function(suggestion) {
-													        	console.log(suggestion)
 										  						var field = {
 										  							value: suggestion.comment.text
 										  						}
@@ -381,29 +395,36 @@ slackBot.activateSlackBots().then(function(slackBotTokens) {
 									  			})
 									  		}else if (context.action == 'action_list_comments') {
 									  			context.action = ''
-									  			Leap.listComments(context.startupName).then(function(commentsList) {
+									  			Leap.listFeedbacks(context.startupName).then(function(commentsList) {
+									  				console.log(commentsList)
 									  				var attachments = []
-									  				for (var i = 0; i < commentsList.length; i++) {
-									  					var comments = commentsList[i].comments
-										  				var authorName = Leap.getMemberNameById(slackTeamId, commentsList[i].author)
-										  				// var localeDate = new Date(commentsList[i].date).toLocaleDateString('pt-br')
-										  				var brDate = new Date(commentsList[i].date)
+									  				// for (var i = 0; i < commentsList.length; i++) {
+								  					commentsList.forEach(function(comments) {
+										  				var brDate = new Date(comments.date)
 										  				var localeDate = brDate.getDate() + '/' + brDate.getMonth() + '/' + brDate.getYear()
-												        var attachment = {
-												        	"title": "Comentários de " + authorName,
-												            "text": localeDate,
-												            "color": "#b6313e"
-												        }
-												        attachments.push(attachment)	  										        
-									  					for (var j = 0; j < comments.length; j++) {
-													        var attachment = {
-													        	"title": "comentário",
-													            "text": comments[j],
-													            "color": "#7CD197"
-													        }
-													        attachments.push(attachment)  										        
-									  					}
-									  				}
+										  				var commentsByAuthors = comments.authors
+										  				Object.keys(commentsByAuthors).forEach(function(authorKey) {
+										  					console.log(authorKey)
+										  					var authorName = Leap.getMemberNameById(slackTeamId, authorKey)
+										  				})																								  				
+										  				
+												    //     var attachment = {
+												    //     	"title": "Comentários de " + authorName,
+												    //         "text": localeDate,
+												    //         "color": "#b6313e"
+												    //     }
+												    //     attachments.push(attachment)	  										        
+									  					// for (var j = 0; j < comments.length; j++) {
+													   //      var attachment = {
+													   //      	"title": "comentário",
+													   //          "text": comments[j],
+													   //          "color": "#7CD197"
+													   //      }
+													   //      attachments.push(attachment)  										        
+									  					// }
+
+								  					})
+									  				// }
 											    	web.chat.postMessage(message.channel, response.output.text[0], {as_user: false, attachments: attachments}, function(err, messageResponse) {
 											    		if (err) {
 											    			console.log(err)
@@ -512,7 +533,6 @@ slackBot.activateSlackBots().then(function(slackBotTokens) {
 
 			rtm.start();
 		})
-
 	});
 
 })

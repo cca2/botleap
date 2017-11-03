@@ -97,117 +97,124 @@ var Leap = (function() {
 		
 		test: function(startupName, writer, commentsList) {
 			//Apagar feedbacks nas startups
-			// var startupsRef = firebase.database().ref('startups')
-			// var updates = {}
-			// startupsRef.once('value', function(snapshot) {
-			// 	var startups = snapshot.val()
-			// 	Object.keys(startups).forEach(function(startupKey) {
-			// 		var startup = startups[startupKey]
-			// 		updates['startups/' + startupKey + '/feedbacks/'] = null
-			// 	})
-			// 	firebase.database().ref().update(updates)
-			// })
+			var startupsRef = firebase.database().ref('startups')
+			var updates = {}
+			return startupsRef.once('value', function(snapshot) {
+				var startups = snapshot.val()
+				Object.keys(startups).forEach(function(startupKey) {
+					var startup = startups[startupKey]
+					updates['startups/' + startupKey + '/feedbacks/'] = null
+				})
+				return firebase.database().ref().update(updates)
+			}).then(function() {
+				console.log('>>> 700 <<<')
+				//Copiar comentários para Feedbacks em cada uma das startups
+				var commentsRef = firebase.database().ref('comments')
+				commentsRef.once('value', function(snapshot) {
+					var comments = snapshot.val()
+					// console.log(comments)
+					var commentsDict = {}
+					var updates = {}					
 
-			//Copiar comentários para Feedbacks em cada uma das startups
-			// var commentsRef = firebase.database().ref('comments')
-			// commentsRef.once('value', function(snapshot) {
-			// 	var comments = snapshot.val()
-			// 	// console.log(comments)
-			// 	var commentsDict = {}
-			// 	var updates = {}					
+					Object.keys(comments).forEach(function(commentKey) {
+						// console.log(comments[commentKey])
+						var date = new Date(comments[commentKey].date)
+						var dayOfMonth = date.getDate()
+						var dayOfMonthStr = ''
+						if (dayOfMonth < 10)
+							dayOfMonthStr = '0' + dayOfMonth
+						else
+							dayOfMonthStr = dayOfMonth
+						var dateStr = dayOfMonthStr + '-' + (date.getMonth() + 1) + '-' + date.getFullYear()
 
-			// 	Object.keys(comments).forEach(function(commentKey) {
-			// 		// console.log(comments[commentKey])
-			// 		var date = new Date(comments[commentKey].date)
-			// 		var dateStr = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear()
+						var comment = comments[commentKey]
+						if (!commentsDict[comment.startupID]) {
+							commentsDict[comment.startupID] = {}
+						}
+						if (!commentsDict[comment.startupID][dateStr]) {
+							commentsDict[comment.startupID][dateStr] = {}
+						}					
+						if (!commentsDict[comment.startupID][dateStr][comment.author]) {
+							commentsDict[comment.startupID][dateStr][comment.author] = {}
+						}
 
-			// 		var comment = comments[commentKey]
-			// 		if (!commentsDict[comment.startupID]) {
-			// 			commentsDict[comment.startupID] = {}
-			// 		}
-			// 		if (!commentsDict[comment.startupID][dateStr]) {
-			// 			commentsDict[comment.startupID][dateStr] = {}
-			// 		}					
-			// 		if (!commentsDict[comment.startupID][dateStr][comment.author]) {
-			// 			commentsDict[comment.startupID][dateStr][comment.author] = {}
-			// 		}
+						commentsDict[comment.startupID][dateStr]['date'] = date
+						commentsDict[comment.startupID][dateStr][comment.author][commentKey] = {
+							text: comment.text,
+							topClass: comment.topClass
+						}
 
-			// 		commentsDict[comment.startupID][dateStr]['date'] = date
-			// 		commentsDict[comment.startupID][dateStr][comment.author][commentKey] = {
-			// 			text: comment.text,
-			// 			topClass: comment.topClass
-			// 		}
+						// updates['startups/' + comments[commentKey].startupID + '/feedbacks/' + dateStr] = {
+						// 	date: comments[commentKey].date,
+						// 	author: comments[commentKey].author
+						// }
+					})
 
-			// 		// updates['startups/' + comments[commentKey].startupID + '/feedbacks/' + dateStr] = {
-			// 		// 	date: comments[commentKey].date,
-			// 		// 	author: comments[commentKey].author
-			// 		// }
-			// 	})
+					console.log('>>> 400 <<<')
+					console.log(commentsDict)
 
-			// 	console.log('>>> 400 <<<')
-			// 	console.log(commentsDict)
-
-			// 	Object.keys(commentsDict).forEach(function(startupKey) {
-			// 		var commentsByDate = commentsDict[startupKey]
-			// 		Object.keys(commentsByDate).forEach(function(date) {
-			// 			var commentsByAuthor = commentsByDate[date]
-			// 			Object.keys(commentsByAuthor).forEach(function(author) {
-			// 				var commentsByID = commentsByAuthor[author]
-			// 				Object.keys(commentsByID).forEach(function(id) {
-			// 					updates['startups/' + startupKey + '/feedbacks/' + date + '/date'] = commentsDict[startupKey][date].date
-			// 					updates['startups/' + startupKey + '/feedbacks/' + date + '/' + author + '/' + id] = commentsDict[startupKey][date][author][id]
-			// 				})
-			// 			})
-			// 		})
-			// 	})
-			// 	return firebase.database().ref().update(updates)
+					Object.keys(commentsDict).forEach(function(startupKey) {
+						var commentsByDate = commentsDict[startupKey]
+						Object.keys(commentsByDate).forEach(function(date) {
+							var commentsByAuthor = commentsByDate[date]
+							Object.keys(commentsByAuthor).forEach(function(author) {
+								var commentsByID = commentsByAuthor[author]
+								Object.keys(commentsByID).forEach(function(id) {
+									updates['startups/' + startupKey + '/feedbacks/' + date + '/date'] = commentsDict[startupKey][date].date
+									updates['startups/' + startupKey + '/feedbacks/' + date + '/authors/' + author + '/' + id] = commentsDict[startupKey][date][author][id]
+								})
+							})
+						})
+					})
+					return firebase.database().ref().update(updates)
 
 
-				// firebase.database().ref().update(updates).then(function() {
-				// 	console.log('Datas do feedbacks foram atualizadas')
-				// })
-			
-			//Aqui não sei o que fazia
-			// 		var comment = comments[commentKey]
+					// firebase.database().ref().update(updates).then(function() {
+					// 	console.log('Datas do feedbacks foram atualizadas')
+					// })
+				
+				//Aqui não sei o que fazia
+				// 		var comment = comments[commentKey]
 
-			// 		if (!commentsDict[comment.startupID]) {
-			// 			commentsDict[comment.startupID] = {}			
-			// 		}
+				// 		if (!commentsDict[comment.startupID]) {
+				// 			commentsDict[comment.startupID] = {}			
+				// 		}
 
-			// 		var date = new Date(comment.date)
-			// 		var localeDate = date.getDate().toString() 
-			// 		localeDate += '-' + date.getMonth().toString()
-			// 		localeDate += '-' + date.getFullYear().toString()
-			// 		if (!commentsDict[comment.startupID][localeDate]) {
-			// 			commentsDict[comment.startupID][localeDate] = {}
-			// 		}
+				// 		var date = new Date(comment.date)
+				// 		var localeDate = date.getDate().toString() 
+				// 		localeDate += '-' + date.getMonth().toString()
+				// 		localeDate += '-' + date.getFullYear().toString()
+				// 		if (!commentsDict[comment.startupID][localeDate]) {
+				// 			commentsDict[comment.startupID][localeDate] = {}
+				// 		}
 
-			// 		if (!commentsDict[comment.startupID][localeDate][comment.author]) {
-			// 			commentsDict[comment.startupID][localeDate][comment.author] = {}
-			// 		}					
+				// 		if (!commentsDict[comment.startupID][localeDate][comment.author]) {
+				// 			commentsDict[comment.startupID][localeDate][comment.author] = {}
+				// 		}					
 
-			// 		commentsDict[comment.startupID][localeDate][comment.author][commentKey] = {
-			// 			text: comment.text,
-			// 			topClass: comment.topClass
-			// 		}
+				// 		commentsDict[comment.startupID][localeDate][comment.author][commentKey] = {
+				// 			text: comment.text,
+				// 			topClass: comment.topClass
+				// 		}
 
-			// 		console.log(commentsDict[comment.startupID][localeDate][comment.author])
-			// 	})
-			// 	Object.keys(commentsDict).forEach(function(startupKey) {
-			// 		var commentsByDate = commentsDict[startupKey]
-			// 		Object.keys(commentsByDate).forEach(function(date) {
-			// 			var commentsByAuthor = commentsByDate[date]
-			// 			Object.keys(commentsByAuthor).forEach(function(author) {
-			// 				var commentsByID = commentsByAuthor[author]
-			// 				Object.keys(commentsByID).forEach(function(id) {
-			// 					var updates = {}
-			// 					updates['startups/' + startupKey + '/feedbacks/' + date + '/' + author + '/' + id] = commentsDict[startupKey][date][author][id]
-			// 					firebase.database().ref().update(updates)
-			// 				})
-			// 			})
-			// 		})
-			// 	})
-			// })
+				// 		console.log(commentsDict[comment.startupID][localeDate][comment.author])
+				// 	})
+				// 	Object.keys(commentsDict).forEach(function(startupKey) {
+				// 		var commentsByDate = commentsDict[startupKey]
+				// 		Object.keys(commentsByDate).forEach(function(date) {
+				// 			var commentsByAuthor = commentsByDate[date]
+				// 			Object.keys(commentsByAuthor).forEach(function(author) {
+				// 				var commentsByID = commentsByAuthor[author]
+				// 				Object.keys(commentsByID).forEach(function(id) {
+				// 					var updates = {}
+				// 					updates['startups/' + startupKey + '/feedbacks/' + date + '/' + author + '/' + id] = commentsDict[startupKey][date][author][id]
+				// 					firebase.database().ref().update(updates)
+				// 				})
+				// 			})
+				// 		})
+				// 	})
+				})
+			})
 		},
 
 		saveAndClassifyComments: function(startupName, writer, commentsList) {
@@ -705,18 +712,23 @@ var Leap = (function() {
 			return newCanvasKey
 		},
 
-		listComments: function(startupName) {
+		listFeedbacks: function(startupName) {
 			var startupId = startupsIdsByName[startupName]
-			var commentsRef = database.ref('startups/' + startupId + '/comments').orderByKey().limitToLast(10)
+			var commentsRef = database.ref('startups/' + startupId + '/feedbacks').orderByKey().limitToLast(10)
 			return commentsRef.once('value').then(function(snapshot) {
   				var commentsList = []
   				var commentsDict = snapshot.val()
+  				console.log('>>> 700')
 				if (commentsDict) {
-  				var keys = Object.keys(commentsDict)
-	  				for (var i = 0; i < keys.length; i++) {
-	  					var comments = commentsDict[keys[i]]
-	  					commentsList.push(comments)
-	  				}
+					Object.keys(commentsDict).forEach(function(key) {
+						var comments = commentsDict[key]
+						commentsList.push(comments)
+					})
+  		// 		var keys = Object.keys(commentsDict)
+	  	// 			for (var i = 0; i < keys.length; i++) {
+	  	// 				var comments = commentsDict[keys[i]]
+	  	// 				commentsList.push(comments)
+	  	// 			}
 				}  		
 				commentsList.reverse()		
   				return commentsList
