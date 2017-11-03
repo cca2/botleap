@@ -18,7 +18,7 @@
 
 var express = require('express'); // app server
 var request = require('request') //app request
-// var slackBot = require('./slack-bot')
+var slackBot = require('./slack-bot')
 
 var bodyParser = require('body-parser'); // parser for post requests
 var Conversation = require('watson-developer-cloud/conversation/v1'); // watson sdk
