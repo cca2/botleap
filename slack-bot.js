@@ -140,6 +140,27 @@ var SlackBot = (function() {
                     })                                                  
                   })
                 }
+              }else if (context.action == 'action_remove_member_from_startup') {
+                context.action = ''
+                console.log('>>> 800')
+                var memberToRemoveID = context.memberToRemoveID
+                var startupName = context.startupName
+                if (memberToRemoveID) {
+                  memberToRemoveID = memberToRemoveID.substring(2,11)
+                  var memberName = Leap.getMemberNameById(slackTeamId, memberToRemoveID)
+                  console.log(memberToRemoveID)
+                  console.log(memberName)
+                  Leap.removeMemberFromStartup(slackTeamId, startupName, memberToRemoveID).then(function() {
+                    var text = response.output.text[0].replace('MEMBER_NAME', memberName)
+                    web.chat.postMessage(message.channel, text, true, function(err, messageResponse) {
+                      if (err) {
+
+                      }else {
+
+                      }
+                    })                                                  
+                  })
+                }
               }else if (context.action == 'action_show_startup_evaluation') {
                 context.action = ''
                 web.chat.postMessage(message.channel, response.output.text[0], true, function(err, messageResponse) {

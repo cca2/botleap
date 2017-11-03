@@ -546,6 +546,13 @@ var Leap = (function() {
 			return firebase.database().ref().update(updates)
 		},
 
+		removeMemberFromStartup: function(teamId, startupName, memberId) {
+			var startupId = startupsIdsByName[startupName]
+			var updates = {}
+			updates['/startups/' + startupId + '/founders/' + memberId] = {}
+			return firebase.database().ref().update(updates)
+		},
+
 		createStartup: function(teamId, startupName, founderId) {
 			var newStartup = {
 				name: startupName,
