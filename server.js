@@ -35,8 +35,6 @@ var CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS;
 var WebClient = require('@slack/client').WebClient;
 
 slackBot.activateSlackBots().then(function(slackBotTokens) {
-	console.log('>>> 400 <<<')
-	console.log('port: ' + (port))
 	var port = process.env.PORT || process.env.VCAP_APP_PORT || 3000;
 
 	server.listen(port, function() {
@@ -279,7 +277,7 @@ slackBot.activateSlackBots().then(function(slackBotTokens) {
 									  					var mStr = localeDate.getMonth() + 1
 									  					if (mStr < 10)
 									  						mStr = '0' + mStr
-									  					
+
 									  					var yStr = localeDate.getFullYear()
 
 									  					localeDate = dStr + '/' + mStr + '/' + yStr

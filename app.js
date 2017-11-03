@@ -110,7 +110,10 @@ app.get('/auth/redirect', (req, res) => {
           console.log(JSONresponse)          
           res.send("Error encountered: \n"+JSON.stringify(JSONresponse)).status(200).end()
       }else{
-          console.log(JSONresponse)          
+          console.log(JSONresponse)
+          var teamID = JSONresponse.team_id
+          var slackBotToken = JSONresponse.bot.bot_access_token
+          SlackBot.activateSlackBotToken(teamID, slackBotToken)
           res.send("Success!")
       }
   })

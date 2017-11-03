@@ -39,6 +39,12 @@ var SlackBot = (function() {
       })
     },
 
+    activateSlackBot: function(teamID, slackBotToken) {
+      console.log('>>> 800')
+      console.log(teamID)
+      console.log(slackBotToken)
+    }
+
   };
 
 }());
