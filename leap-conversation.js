@@ -120,12 +120,14 @@ var Leap = (function() {
 						// console.log(comments[commentKey])
 						var date = new Date(comments[commentKey].date)
 						var dayOfMonth = date.getDate()
-						var dayOfMonthStr = ''
 						if (dayOfMonth < 10)
-							dayOfMonthStr = '0' + dayOfMonth
-						else
-							dayOfMonthStr = dayOfMonth
-						var dateStr = dayOfMonthStr + '-' + (date.getMonth() + 1) + '-' + date.getFullYear()
+							dayOfMonth = '0' + dayOfMonth
+
+						var month = (date.getMonth() + 1)
+						if (month < 10)
+							month = '0' + month
+
+						var dateStr = date.getFullYear() + '-' + month + '-' + dayOfMonth
 
 						var comment = comments[commentKey]
 						if (!commentsDict[comment.startupID]) {
@@ -280,11 +282,19 @@ var Leap = (function() {
 				var updates = {}
 				commentsToSave.forEach(function(comment) {
 					var dateToSave = new Date(comment.date)
-					var dateToSaveStr = dateToSave.getDate() + '-' + (dateToSave.getMonth() + 1) + '-' + dateToSave.getFullYear()
+					var dStr = dateToSave.getDate()
+					if (dStr < 10)
+						dStr = '0' + dStr
+
+					var mStr = (dateToSave.getMonth() + 1)
+					if (mStr < 10)
+						mStr = '0' + mStr
+
+					var dateToSaveStr = dateToSave.getFullYear() + '-' + mStr + '-' + dStr
 					var newCommentKey = commentsRef.push().key
 					updates['comments/' + newCommentKey] = comment
 					updates['startups/' + comment.startupID + '/feedbacks/' + dateToSaveStr + '/date'] = dateToSave
-					updates['startups/' + comment.startupID + '/feedbacks/' + dateToSaveStr + '/' + comment.author + '/' + newCommentKey] = {
+					updates['startups/' + comment.startupID + '/feedbacks/' + dateToSaveStr + '/authors/' + comment.author + '/' + newCommentKey] = {
 						text: comment.text,
 						topClass: comment.topClass
 					}
@@ -724,11 +734,6 @@ var Leap = (function() {
 						var comments = commentsDict[key]
 						commentsList.push(comments)
 					})
-  		// 		var keys = Object.keys(commentsDict)
-	  	// 			for (var i = 0; i < keys.length; i++) {
-	  	// 				var comments = commentsDict[keys[i]]
-	  	// 				commentsList.push(comments)
-	  	// 			}
 				}  		
 				commentsList.reverse()		
   				return commentsList
