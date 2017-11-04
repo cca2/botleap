@@ -96,7 +96,7 @@ function updateMessage(input, response) {
 }
 
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/public/imperial/index.html')
+  res.sendFile(__dirname + './public/imperial/index.html')
 })
 
 app.get('/auth/redirect', (req, res) => {
