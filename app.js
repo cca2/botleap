@@ -26,7 +26,7 @@ var Conversation = require('watson-developer-cloud/conversation/v1'); // watson 
 var app = express();
 
 // Bootstrap application settings
-app.use(express.static('./public/imperial')); // load UI from public folder
+app.use(express.static('./public')); // load UI from public folder
 app.use(bodyParser.json());
 
 // Create the service wrapper
