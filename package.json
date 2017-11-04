@@ -21,10 +21,12 @@
   "dependencies": {
     "@slack/client": "^3.14.0",
     "body-parser": "^1.18.2",
+    "consolidate": "^0.15.0",
     "dotenv": "^2.0.0",
     "express": "^4.16.1",
     "firebase": "^4.5.0",
     "json2csv": "^3.11.4",
+    "mustache": "^2.3.0",
     "node-slackr": "^0.1.4",
     "watson-developer-cloud": "^2.40.0",
     "xmlhttprequest": "^1.8.0"
