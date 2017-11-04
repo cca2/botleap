@@ -4,12 +4,12 @@ var request = require('request');
 // Initialize Firebase
 // TODO: Replace with your project's customized code snippet
 var firebase = require('firebase');
-var config = {
-  // apiKey: "<API_KEY>",
-  // authDomain: "<PROJECT_ID>.firebaseapp.com",
-  databaseURL: "https://foresight-f9060.firebaseio.com",
-};
-firebase.initializeApp(config);
+// var config = {
+//   // apiKey: "<API_KEY>",
+//   // authDomain: "<PROJECT_ID>.firebaseapp.com",
+//   databaseURL: "https://foresight-f9060.firebaseio.com",
+// };
+// firebase.initializeApp(config);
 
 var database = firebase.database();
 var startupsDict = {};

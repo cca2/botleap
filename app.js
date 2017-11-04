@@ -16,6 +16,16 @@
 
 'use strict';
 
+// Initialize Firebase
+// TODO: Replace with your project's customized code snippet
+var firebase = require('firebase');
+var config = {
+  // apiKey: "<API_KEY>",
+  // authDomain: "<PROJECT_ID>.firebaseapp.com",
+  databaseURL: "https://foresight-f9060.firebaseio.com",
+};
+firebase.initializeApp(config);
+
 var express = require('express'); // app server
 var engines = require('consolidate')
 var path = require('path')
@@ -43,9 +53,107 @@ app.use(bodyParser.json());
 //   res.sendFile(__dirname + './public/imperial/index.html')
 // })
 
+function fetchCommentsByStartupId(teamId, startupId) {
+  console.log(startupId)
+  const startupRef = firebase.database().ref('startups/' + startupId);
+  var authorsDict = {};
+  var authorsList = [] ;
+  var startup = null;
+  return startupRef.once('value').then((snapshot) => {
+    console.log('>>> 300')
+    startup = snapshot.val();
+    console.log(startup);
+
+    if (startup) {
+      const feedbacks = startup.feedbacks;
+      Object.keys(feedbacks).forEach(function(date) {
+        const feedbacksByDate = feedbacks[date];
+        Object.keys(feedbacksByDate).forEach(function(authorID) {
+          authorsList.push(authorID);
+        })
+      })
+
+      var promises = [];
+      var authorsRef = firebase.database().ref('slack_teams/' + teamId + '/members');
+      return authorsRef.once('value', function(authorsSnapshot) {
+        console.log('>>> 400 <<<')
+        var authors = authorsSnapshot.val();
+        console.log(authors);
+        authorsList.forEach(function(authorID) {
+          console.log(authorID)
+          if (authorID != 'date') {
+            if (authors[authorID])
+              authorsDict[authorID] = authors[authorID].name;
+          }
+        })
+        console.log('>>> 410 <<<');
+        console.log(authorsDict);
+      }).then(function() {
+        console.log('>>> 420 <<<');
+        if (startup) {
+        console.log('>>> 430 <<<');
+        console.log(startup)      
+          return {startup: startup, authorsDict: authorsDict};
+        }else {
+        console.log('>>> 440 <<<');
+          return null;
+        }
+      });      
+    }
+  });
+}
+
 app.get('/', function(req, res) {
   console.log('>>> 800 <<<')
-  res.render('index.html', {startupName: 'Porquin', feedbacks: [{text: 'Isto é apenas um teste e nada mais'}, {text: 'teste1'}], test: 'teste'})
+  // console.log(req)
+  var slack_team_id = req.query.slack_team_id
+  var startup_id = req.query.startup_id
+  console.log(slack_team_id)
+  console.log(startup_id)
+  fetchCommentsByStartupId(slack_team_id, startup_id).then(function(result) {
+    var feedbacks = result.startup.feedbacks
+    var commentsList = []
+    // var htmlCommentsList = []
+    var dayComments = {}
+    var page = this
+
+    //Ordenar os comentários de forma decrescente de data
+    var datesSorted = Object.keys(feedbacks).sort(function(a,b) {
+      var dateA = new Date(feedbacks[a].date)
+      var dateB = new Date(feedbacks[b].date)
+      return dateB - dateA
+    })
+
+    datesSorted.forEach(function(key) {
+      var dComments = feedbacks[key]
+      var dayComments = {
+        date: new Date(feedbacks[key].date).toLocaleDateString('pt-BR'),
+        compliments: [],
+        questions: [],
+        critics: [],
+        suggestions: []
+      }
+
+      Object.keys(dComments.authors).forEach(function(author) {
+        var authorComments = dComments.authors[author]
+        Object.keys(authorComments).forEach(function(commentKey) {
+          var authorComment = authorComments[commentKey]
+
+          if (authorComment.topClass == 'ELOGIO')
+            dayComments.compliments.push({text: authorComment.text, author:author})
+          if (authorComment.topClass == 'CRITICA')
+            dayComments.critics.push({text: authorComment.text, author:author})
+          if (authorComment.topClass == 'PERGUNTA')
+            dayComments.questions.push({text: authorComment.text, author:author})
+          if (authorComment.topClass == 'SUGESTAO')
+            dayComments.suggestions.push({text: authorComment.text, author:author})
+        })
+      })
+      commentsList.push(dayComments)
+    })
+
+    res.render('index.html', {startupName: result.startup.name, feedbacks: commentsList})
+  })  
 })
 
 app.get('/auth/redirect', (req, res) => {

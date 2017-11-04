@@ -23,7 +23,7 @@
   <meta name="twitter:image" content="">
 
   <!-- Place your favicon.ico and apple-touch-icon.png in the template root directory -->
-  <link href="favicon.ico" rel="shortcut icon">
+  <!-- <link href="favicon.ico" rel="shortcut icon"> -->
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Raleway:300,400,500,700,800" rel="stylesheet">
@@ -63,9 +63,9 @@
 
       <nav id="nav-menu-container">
         <ul class="nav-menu">
-          <li><a href="#services">CBL</a></li>
+          <!-- <li><a href="#services">CBL</a></li> -->
           <li><a href="#testimonials">Feedbacks</a></li>
-          <li><a href="#team">Team</a></li>
+          <!-- <li><a href="#team">Team</a></li> -->
         </ul>
       </nav>
       <!-- #nav-menu-container -->
@@ -76,6 +76,7 @@
   <!--==========================
   Services Section
   ============================-->
+  <!--
   <section id="services">
     <div class="container wow fadeInUp">
       <div class="row">
@@ -120,7 +121,7 @@
       </div>
     </div>
   </section>
-
+  -->
   <!--==========================
   Feedbacks Section
   ============================-->
@@ -130,10 +131,12 @@
         <div class="col-md-12">
           <h3 class="section-title">Feedbacks para {{ startupName }}</h3>
           <div class="section-title-divider"></div>
-          <p class="section-description">Erdo lide, nora porodo filece, salvam esse se, quod concedimus ses haec dicturum fuisse</p>
+          <p class="section-description">Estes são os feedbacks para a {{ startupName}} ordenados pelos mais recentes</p>
         </div>
       </div>
       {{ #feedbacks}}
+      {{ date }}
+      {{ #compliments }}
       <div class="quote-row row">
         <div class="col-md-12">
           <div class="quote">
@@ -141,6 +144,34 @@
           </div>
         </div>
       </div>
+      {{ /compliments }}
+      {{ #questions }}
+      <div class="quote-row row">
+        <div class="col-md-12">
+          <div class="quote">
+            <b><img src="img/quote_sign_left.png" alt=""></b> <span class="quote-text">{{ text }}</span> <small><img src="img/quote_sign_right.png" alt=""></small>
+          </div>
+        </div>
+      </div>
+      {{ /questions }}
+      {{ #critics }}
+      <div class="quote-row row">
+        <div class="col-md-12">
+          <div class="quote">
+            <b><img src="img/quote_sign_left.png" alt=""></b> <span class="quote-text">{{ text }}</span> <small><img src="img/quote_sign_right.png" alt=""></small>
+          </div>
+        </div>
+      </div>
+      {{ /critics }}
+      {{ #suggestions }}
+      <div class="quote-row row">
+        <div class="col-md-12">
+          <div class="quote">
+            <b><img src="img/quote_sign_left.png" alt=""></b> <span class="quote-text">{{ text }}</span> <small><img src="img/quote_sign_right.png" alt=""></small>
+          </div>
+        </div>
+      </div>
+      {{ /suggestions }}
       {{ /feedbacks }}
       <!--
       <div class="row">
@@ -165,6 +196,7 @@
   <!--==========================
   Team Section
   ============================-->
+  <!--
   <section id="team">
     <div class="container wow fadeInUp">
       <div class="row">
@@ -235,6 +267,7 @@
       </div>
     </div>
   </section>
+-->
 
   <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
 

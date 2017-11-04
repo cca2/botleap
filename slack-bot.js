@@ -282,7 +282,8 @@ var SlackBot = (function() {
                       attachments.push(attachment)
                   }else {
                       var attachment = {
-                        "title": "Mais detalhes pode ser vistos em http://localhost:8080/comments/" + slackTeamId + "/" + Leap.getStartupIdByName(context.startupName),
+                        // "title": "Mais detalhes pode ser vistos em http://localhost:8080/comments/" + slackTeamId + "/" + Leap.getStartupIdByName(context.startupName),
+                        "title": "Mais detalhes podem ser vistos em https://leapbot.herokuapp.com/?slack_team_id=" + slackTeamId + "&startup_id=" + Leap.getStartupIdByName(context.startupName),
                           "color": "#181818"
                       }
                       attachments.push(attachment)
