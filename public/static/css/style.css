@@ -665,6 +665,11 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 /* Testimonials Section
 --------------------------------*/
+
+.quote-row:nth-child(even) {
+  margin-left: 25%
+}
+
 #testimonials {
   background: #f6f6f6;
   padding: 80px 0;
