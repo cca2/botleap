@@ -95,6 +95,10 @@ function updateMessage(input, response) {
   return response;
 }
 
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/public/imperial/index.html')
+})
+
 app.get('/auth/redirect', (req, res) => {
   console.log('>>> /auth/redirect')
   var options = {
