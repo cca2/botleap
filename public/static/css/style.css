@@ -666,7 +666,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 /* Testimonials Section
 --------------------------------*/
 
-.quote-row:nth-child(even) {
+.row.quote-row:nth-child(even) .col-md-9 {
   margin-left: 25%
 }
 
