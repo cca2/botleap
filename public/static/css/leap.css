@@ -5,7 +5,7 @@
 # General
 --------------------------------------------------------------*/
 
-#quote .feedback-classifier-buttons {
+.quote .feedback-classifier-buttons {
   position: absolute;
   bottom: 5px;
   right: 5px;
