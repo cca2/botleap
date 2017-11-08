@@ -10,3 +10,7 @@
   bottom: 5px;
   right: 5px;
 }
+
+.quote .feedback-classifier-buttons a {
+  margin-left: 8px;
+}
