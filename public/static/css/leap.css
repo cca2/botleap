@@ -14,3 +14,12 @@
 .quote .feedback-classifier-buttons a {
   margin-left: 8px;
 }
+
+.quote.disliked-quote {
+  background: #8b000091;
+  color: #fff;  
+}
+
+.quote.liked-quote {
+  background: #90ee9059;
+}
