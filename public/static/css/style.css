@@ -701,8 +701,8 @@ body.mobile-nav-active #mobile-nav-toggle {
 #testimonials .quote {
   position: relative;
   background: #fff;
-  padding: 20px;
-  margin-top: 20px;
+  padding: 10px;
+  margin-top: 10px;
   font-size: 16px;
   font-style: italic;
   border-radius: 5px;

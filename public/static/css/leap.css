@@ -5,14 +5,32 @@
 # General
 --------------------------------------------------------------*/
 
-#testimonials .quote .feedback-classifier-buttons {
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
+#testimonials .quote input {
+  margin-right: 20px;
 }
 
-#testimonials .quote .feedback-classifier-buttons a {
-  margin-left: 8px;
+#testimonials .quote .quote-author {
+  position: absolute;
+  bottom: 2px;
+  right: 10px;
+  font-size: 10px;
+  color: #03c5eb78;
+}
+
+#testimonials .quote.compliment-quote {
+  border-left: solid 5px #008b76;
+}
+
+#testimonials .quote.question-quote {
+  border-left: solid 5px #fc9462;
+}
+
+#testimonials .quote.critic-quote {
+  border-left: solid 5px #b6313e;
+}
+
+#testimonials .quote.suggestion-quote {
+  border-left: solid 5px #0099cc;
 }
 
 #testimonials .quote.disliked-quote {

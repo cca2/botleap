@@ -141,8 +141,9 @@
       {{ #compliments }}
       <div class="quote-row row">
         <div class="col-md-12">
-          <div class="quote">
-            <span class="quote-text">{{ text }}</span>
+          <div class="compliment-quote quote">
+            <span class="quote-text"><input type="radio" name="optradio"> {{ text }}</span>
+            <span class="quote-author">por {{author}}</span>
           </div>
         </div>
       </div>
@@ -150,9 +151,9 @@
       {{ #questions }}
       <div class="quote-row row">
         <div class="col-md-12">
-          <div class="quote">
-            <span class="quote-text">{{ text }}</span>
-            <div class="feedback-classifier-buttons"><a class="button-like fa fa-thumbs-o-up"></a><a class="button-dislike fa fa-thumbs-o-down"></a></div>
+          <div class="question-quote quote">
+            <span class="quote-text"><input type="radio" name="optradio"> {{ text }}</span>
+            <span class="quote-author">por {{author}}</span>
           </div>
         </div>
       </div>
@@ -160,8 +161,9 @@
       {{ #critics }}
       <div class="quote-row row">
         <div class="col-md-12">
-          <div class="quote">
-            <span class="quote-text">{{ text }}</span>
+          <div class="critic-quote quote">
+            <span class="quote-text"><input type="radio" name="optradio"> {{ text }}</span>
+            <span class="quote-author">por {{author}}</span>
           </div>
         </div>
       </div>
@@ -169,8 +171,9 @@
       {{ #suggestions }}
       <div class="quote-row row">
         <div class="col-md-12">
-          <div class="quote">
-            <span class="quote-text">{{ text }}</span>
+          <div class="suggestion-quote quote">
+            <span class="quote-text"><input type="radio" name="optradio"> {{ text }}</span>
+            <span class="quote-author">por {{author}}</span>
           </div>
         </div>
       </div>
