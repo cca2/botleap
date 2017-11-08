@@ -295,14 +295,14 @@
       var $button = $(this)
       var $quoteParent = $button.parents('.quote')
       $quoteParent.removeClass('disliked-quote')
-      $quoteParent.addClass('liked-quote')
+      $quoteParent.toggleClass('liked-quote')
     })
 
     $('#testimonials .quote .button-dislike').click(function(event) {
       var $button = $(this)
       var $quoteParent = $button.parents('.quote')
       $quoteParent.removeClass('liked-quote')
-      $quoteParent.addClass('disliked-quote')
+      $quoteParent.toggleClass('disliked-quote')
     })
 
     function likeOrDislikeFeedback(like) {
