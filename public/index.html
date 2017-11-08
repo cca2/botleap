@@ -153,7 +153,7 @@
         <div class="col-md-9">
           <div class="quote">
             <b><img src="img/quote_sign_left.png" alt=""></b> <span class="quote-text">{{ text }}</span> <small><img src="img/quote_sign_right.png" alt=""></small>
-            <div class="feedback-classifier-buttons"><a class="fa fa-thumbs-o-up" onclick="likeOrDislikeFeedback(true)"></a><a class="fa fa-thumbs-o-down" onclick="likeOrDislikeFeedback(false)"></a></div>
+            <div class="feedback-classifier-buttons"><a class="button-like fa fa-thumbs-o-up"></a><a class="button-dislike fa fa-thumbs-o-down"></a></div>
           </div>
         </div>
       </div>
@@ -291,6 +291,20 @@
   <script src="contactform/contactform.js"></script>
 
   <script type="text/javascript">
+    $('#testimonials .quote .button-like').click(function(event) {
+      var $button = $(this)
+      var $quoteParent = $button.parents('.quote')
+      $quoteParent.removeClass('disliked-quote')
+      $quoteParent.addClass('liked-quote')
+    })
+
+    $('#testimonials .quote .button-dislike').click(function(event) {
+      var $button = $(this)
+      var $quoteParent = $button.parents('.quote')
+      $quoteParent.removeClass('liked-quote')
+      $quoteParent.addClass('disliked-quote')
+    })
+
     function likeOrDislikeFeedback(like) {
       console.log(like)
     }
