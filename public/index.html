@@ -140,7 +140,7 @@
       {{ #feedbacks}}
       {{ #compliments }}
       <div class="quote-row row">
-        <div class="col-md-12">
+        <div class="col-md-9">
           <div class="compliment-quote quote">
             <span class="quote-text"><input type="radio" name="optradio"> {{ text }}</span>
             <span class="quote-date">desde {{date}}</span>
@@ -150,9 +150,9 @@
       {{ /compliments }}
       {{ #questions }}
       <div class="quote-row row">
-        <div class="col-md-12">
+        <div class="col-md-9">
           <div class="question-quote quote">
-            <span class="quote-text"><input type="radio" name="optradio"> {{ text }}</span>
+            <span class="quote-text"><input type="radio" name="optradio" data-toggle="modal" data-target="#exampleModal"> {{ text }}</span>
             <span class="quote-date">desde {{date}}</span>
           </div>
         </div>
@@ -160,7 +160,7 @@
       {{ /questions }}
       {{ #critics }}
       <div class="quote-row row">
-        <div class="col-md-12">
+        <div class="col-md-9">
           <div class="critic-quote quote">
             <span class="quote-text"><input type="radio" name="optradio"> {{ text }}</span>
             <span class="quote-date">desde {{date}}</span>
@@ -170,7 +170,7 @@
       {{ /critics }}
       {{ #suggestions }}
       <div class="quote-row row">
-        <div class="col-md-12">
+        <div class="col-md-9">
           <div class="suggestion-quote quote">
             <span class="quote-text"><input type="radio" name="optradio"> {{ text }}</span>
             <span class="quote-date">desde {{date}}</span>
@@ -311,6 +311,30 @@
       console.log(like)
     }
   </script>
+
+<div id="exampleModal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Satisfação com ação da equipe</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <label><input type="radio" name="optradio"> satisfeito</label>
+        <label><input type="radio" name="optradio"> não estou satisfeito</label>
+        <label><input type="radio" name="optradio"> a equipe não entendeu o feedback</label>
+
+        <textarea>Esta é uma área para que você faça algum comentário</textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>  
 </body>
 
 </html>
