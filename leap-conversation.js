@@ -81,6 +81,7 @@ var Leap = (function() {
 		updateMembersListFromSlack: updateMembersListFromSlack,
 		classifyComments: classifyComments,
 		getStartupIdByName: getStartupIdByName,
+		monitorNewStartups: monitorNewStartups,
 
 		appendCommentsToGoogleSpreadsheet: function(comments) {
 			request.post(
@@ -503,10 +504,10 @@ var Leap = (function() {
 						id: teamId,
 						name: teamName
 					}).then(function() {
-						monitorNewStartups(teamId)
+						// monitorNewStartups(teamId)
 					})
 				}else {
-					monitorNewStartups(teamId)
+					// monitorNewStartups(teamId)
 				}
 			}).then(function() {
 				web.users.list(function(err, list) {
@@ -551,6 +552,25 @@ var Leap = (function() {
 			var updates = {}
 			updates['/startups/' + startupId + '/founders/' + memberId] = {}
 			return firebase.database().ref().update(updates)
+		},
+
+		updateStartupName: function(teamId, startupName, newStartupName) {
+			console.log('>>> 900')
+			console.log(startupName)
+			console.log(newStartupName)
+			console.log(startupsIdsByName)
+
+			var startupId = startupsIdsByName[startupName]
+
+			if (startupId) {
+				console.log('>>> 905 <<<')
+				var updates = {}
+				updates['startups/' + startupId + '/name'] = newStartupName
+				updates['slack_teams/' + teamId + '/startups/' + startupId] = newStartupName
+				return firebase.database().ref().update(updates)
+			}else {
+				console.log('>>> 910 <<<')
+			}
 		},
 
 		createStartup: function(teamId, startupName, founderId) {
@@ -927,10 +947,11 @@ function updateMembersListFromSlack (teamId, members) {
 }
 
 
-function monitorNewStartups (teamId) {
+function monitorNewStartups () {
 	// Monitorar a criação de novas startups
 	var startups = firebase.database().ref('/startups');
-	startups.on('value', function(snapshot) {
+	
+	return startups.on('value', function(snapshot) {
 		startupsDict = snapshot.val();
 		if (startupsDict) {
 			var startupsIds = Object.keys(startupsDict);
@@ -945,20 +966,48 @@ function monitorNewStartups (teamId) {
 				if (err) {
 					console.log(err)
 				}else {
+					console.log('>>> 900 <<<')
 					console.log('Nomes das startups atualizados')
 				}
 			})			
 		}
 	});
 
-	var members = firebase.database().ref('slack_teams/' + teamId + '/members')
-	members.on('value', function(snapshot) {
-		// membersDict = snapshot.val()
-	})
 
+
+	// var members = firebase.database().ref('slack_teams/' + teamId + '/members')
+	// members.on('value', function(snapshot) {
+	// 	// membersDict = snapshot.val()
+	// })
+
+	// var startups = firebase.database().ref('slack_teams/' + teamId + '/startups')
+	// startups.on('value', function(snapshot) {
+	// 	var startups = snapshot.val()
+
+	// 	if (startups) {			
+	// 		var startupNames = []
+	// 		var startupsIds = Object.keys(startups)
+	// 		startupsIds.forEach(function(startupId) {
+	// 			var startupName = startups[startupId]
+	// 			startupNames.push({'value': startupName})
+	// 			startupsIdsByName[startupName] = startupId
+	// 		})
+
+	// 		updateStartupNames(startupNames, function(err, response) {
+	// 			if (err) {
+	// 				console.log(err)
+	// 			}else {
+	// 				console.log('>>> 900 <<<')
+	// 				console.log('Nomes das startups atualizados')
+	// 			}
+	// 		})						
+	// 	}
+	// })
 }
 
 function updateStartupNames(names, responseFunc) {
+	console.log('>>> updateStartupNames <<<')
+	console.log(names)
 
 	var params = {
 	  workspace_id: workspaceId,

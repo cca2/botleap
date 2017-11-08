@@ -29,6 +29,10 @@ var SlackBot = (function() {
   return {
     activateSlackBot: activateSlackBot,
 
+    monitorStartups: function() {
+      Leap.monitorNewStartups()
+    },
+
     activateSlackBots: function() {
       var slackBotTokens = []
       var slackTeamsRef = firebase.database().ref('slack_teams')
@@ -69,7 +73,7 @@ var SlackBot = (function() {
 
     if (!activeTokens[token] || !activeTokens[token].active) {
       activeTokens[token].active = true
-      
+
       var rtm = new RtmClient(token)
       var web = new WebClient(token)
 
@@ -126,6 +130,31 @@ var SlackBot = (function() {
                   context.action =  ''
                   // Leap.downloadCSVFile()
                   // Leap.test()
+                  web.chat.postMessage(message.channel, response.output.text[0], true, function(err, messageResponse) {
+                    if (err) {
+
+                    }else {
+
+                    }
+                  })
+                }else if (context.action == 'action_update_startup_name'){
+                  context.action = ''
+                  var newStartupName = context.newStartupName.trim()
+                  var startupName = context.startupName
+                  var result = Leap.updateStartupName(slackTeamId, startupName, newStartupName)
+                  if (result) {
+                    result.then(function() {
+                      Leap.sendMessage('', context, function(err, response) {
+                        // web.chat.postMessage(message.channel, response.output.text[0], true, function(err, message) {
+                        //   if (err) {
+
+                        //   }else {
+
+                        //   }
+                        // })
+                      })
+                    })
+                  }
                   web.chat.postMessage(message.channel, response.output.text[0], true, function(err, messageResponse) {
                     if (err) {
 

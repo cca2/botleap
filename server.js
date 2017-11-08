@@ -34,11 +34,13 @@ var slackBot = require('./slack-bot')
 
 // var WebClient = require('@slack/client').WebClient;
 
+slackBot.monitorStartups()
+
 slackBot.activateSlackBots().then(function(slackBotTokens) {
 	var port = process.env.PORT || process.env.VCAP_APP_PORT || 3000;
 
 	server.listen(port, function() {
-	  	console.log('Server running on port: %d', port);
+	  	console.log('Server running on port: %d', port);	  	
 	  	slackBotTokens.forEach(function(token) {
 	  		slackBot.activateSlackBot(token)
 	  	})
