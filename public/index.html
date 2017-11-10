@@ -279,7 +279,8 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Satisfação com ação da equipe</h5>
+          <h5 class="modal-title"><span class="feedback-text">Satisfação com ação da equipe</span> </h5>
+          <small>Com relação à ação tomada pela equipe você ficou...</small>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -288,16 +289,16 @@
           <div id="modal-options">
             <div id="modal-satisfaction-options">
               <div class="row">
-                <label><input type="radio" name="satisfactionOptRadio" value="satisfied"> estou satisfeito</label>    
+                <label><input type="radio" name="satisfactionOptRadio" value="satisfied"> estou satisfeito com a ação da equipe</label>    
               </div>
               <div class="row">
-                <label><input type="radio" name="satisfactionOptRadio" value="notSatisfied"> não estou satisfeito</label>    
+                <label><input type="radio" name="satisfactionOptRadio" value="notSatisfied"> não estou satisfeito com a ação da equipe</label>    
               </div>
               <div class="row">
                 <label><input type="radio" name="satisfactionOptRadio" value="actionNotUnderstood"> a equipe não entendeu o feedback</label>
               </div>        
             </div>
-            <textarea visibility="false" rows="3" placeholder="Ex: a resposta não foi convincente porque..."></textarea>
+            <textarea visibility="false" rows="3"></textarea>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary">Salvar</button>
@@ -327,19 +328,31 @@
 
   <script type="text/javascript">
     $('#testimonials .quote').click(function(event) {
+      var title = $(this).find('.quote-text').text()
+      $('.modal-title .feedback-text').text(title)
       $('#satisfaction-options-modal').modal('show')
     })
 
     $(function() {
+      $('#satisfaction-options-modal').on('show.bs.modal', function() {
+        $('#satisfaction-options-modal textarea').hide()
+        $('input[name=satisfactionOptRadio]').prop('checked', false)
+      })
+
       $('input:radio[name=satisfactionOptRadio]').change(function() {
-        var $radio = $(this)
+        var $radio = $(this)        
         if ($radio.val() == 'satisfied') {
+          $('#satisfaction-options-modal textarea').show()
+          $('#satisfaction-options-modal textarea').val('')
+          $('#satisfaction-options-modal textarea').focus()
         }else if ($radio.val() == 'notSatisfied') {
-          $('#satisfaction-options-modal textarea').attr('placeholder', 'Ex: não estou satisfeito porque ...')
+          // $('#satisfaction-options-modal textarea').attr('placeholder', 'Ex: não estou satisfeito porque ...')
+          $('#satisfaction-options-modal textarea').show()
           $('#satisfaction-options-modal textarea').val('')
           $('#satisfaction-options-modal textarea').focus()
         }else {
-          $('#satisfaction-options-modal textarea').attr('placeholder', 'Ex: o feedback não foi entendido porque...')
+          // $('#satisfaction-options-modal textarea').attr('placeholder', 'Ex: o feedback não foi entendido porque...')
+          $('#satisfaction-options-modal textarea').show()
           $('#satisfaction-options-modal textarea').val('')
           $('#satisfaction-options-modal textarea').focus()
         }

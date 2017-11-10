@@ -5,8 +5,8 @@
 # General
 --------------------------------------------------------------*/
 
-#testimonials .quote input {
-  margin-right: 20px;
+#testimonials .quote {
+  cursor: pointer;
 }
 
 #testimonials .quote .quote-date {
@@ -51,4 +51,12 @@
   width: 100%;
   border: 0px;
   outline: none;
+}
+
+#satisfaction-options-modal .feedback-text {
+  font-size: 18px;
+}
+
+#satisfaction-options-modal input[name=satisfactionOptRadio] {
+  margin-right: 10px;
 }
