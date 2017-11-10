@@ -140,13 +140,13 @@ app.get('/', function(req, res) {
           var authorComment = authorComments[commentKey]
 
           if (authorComment.topClass == 'ELOGIO')
-            dayComments.compliments.push({text: authorComment.text, author:author})
+            dayComments.compliments.push({text: authorComment.text, author:author, key: commentKey})
           if (authorComment.topClass == 'CRITICA')
-            dayComments.critics.push({text: authorComment.text, author:author})
+            dayComments.critics.push({text: authorComment.text, author:author, key: commentKey})
           if (authorComment.topClass == 'PERGUNTA')
-            dayComments.questions.push({text: authorComment.text, author:author})
+            dayComments.questions.push({text: authorComment.text, author:author, key: commentKey})
           if (authorComment.topClass == 'SUGESTAO')
-            dayComments.suggestions.push({text: authorComment.text, author:author})
+            dayComments.suggestions.push({text: authorComment.text, author:author, key: commentKey})
         })
       })
       commentsList.push(dayComments)

@@ -139,7 +139,7 @@
       </div>
       {{ #feedbacks}}
       {{ #compliments }}
-      <div class="quote-row row">
+      <div class="quote-row row" value={{key}}>
         <div class="col-md-9">
           <div class="compliment-quote quote">
             <span class="quote-text">{{ text }}</span>
@@ -149,7 +149,7 @@
       </div>
       {{ /compliments }}
       {{ #questions }}
-      <div class="quote-row row">
+      <div class="quote-row row" value={{key}}>
         <div class="col-md-9">
           <div class="question-quote quote">
             <span class="quote-text"> {{ text }}</span>
@@ -159,7 +159,7 @@
       </div>
       {{ /questions }}
       {{ #critics }}
-      <div class="quote-row row">
+      <div class="quote-row row" value={{key}}>
         <div class="col-md-9">
           <div class="critic-quote quote">
             <span class="quote-text">{{ text }}</span>
@@ -169,7 +169,7 @@
       </div>
       {{ /critics }}
       {{ #suggestions }}
-      <div class="quote-row row">
+      <div class="quote-row row" value={{key}}>
         <div class="col-md-9">
           <div class="suggestion-quote quote">            
             <span class="quote-text"> {{ text }}</span>
@@ -301,7 +301,7 @@
             <textarea visibility="false" rows="3"></textarea>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary">Salvar</button>
+          <button id="saveFeedbackSatisfactionButton" type="button" class="btn btn-primary">Salvar</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
         </div>
       </div>
@@ -327,20 +327,32 @@
   <script src="contactform/contactform.js"></script>
 
   <script type="text/javascript">
-    $('#testimonials .quote').click(function(event) {
-      var title = $(this).find('.quote-text').text()
-      $('.modal-title .feedback-text').text(title)
-      $('#satisfaction-options-modal').modal('show')
-    })
+    var feedbackID
 
     $(function() {
+
+      $('#testimonials .quote-row').click(function(event) {
+        var title = $(this).find('.quote-text').text()
+        feedbackID = $(this).attr('value')
+
+        $('.modal-title .feedback-text').text(title)
+        $('#satisfaction-options-modal').modal('show')
+      })
+
       $('#satisfaction-options-modal').on('show.bs.modal', function() {
+        $('#saveFeedbackSatisfactionButton').prop('disabled', true)
         $('#satisfaction-options-modal textarea').hide()
         $('input[name=satisfactionOptRadio]').prop('checked', false)
       })
 
+      $('#saveFeedbackSatisfactionButton').click(function() {
+        $('#testimonials .quote-row[value=' + feedbackID + ']').hide()
+        $('#satisfaction-options-modal').modal('hide')
+      })
+
       $('input:radio[name=satisfactionOptRadio]').change(function() {
-        var $radio = $(this)        
+        var $radio = $(this)
+        $('#saveFeedbackSatisfactionButton').prop('disabled', false)
         if ($radio.val() == 'satisfied') {
           $('#satisfaction-options-modal textarea').show()
           $('#satisfaction-options-modal textarea').val('')
