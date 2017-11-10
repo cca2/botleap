@@ -698,31 +698,6 @@ body.mobile-nav-active #mobile-nav-toggle {
   color: #333333;
 }
 
-#testimonials .quote {
-  position: relative;
-  background: #fff;
-  padding: 10px;
-  margin-top: 10px;
-  font-size: 16px;
-  font-style: italic;
-  border-radius: 5px;
-}
-
-#testimonials .quote b {
-  display: inline-block;
-  font-size: 22px;
-  left: -9px;
-  position: relative;
-  top: -8px;
-}
-
-#testimonials .quote small {
-  display: inline-block;
-  right: -9px;
-  position: relative;
-  top: 4px;
-}
-
 /* Team Section
 --------------------------------*/
 #team {

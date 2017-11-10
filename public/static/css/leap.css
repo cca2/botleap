@@ -5,7 +5,74 @@
 # General
 --------------------------------------------------------------*/
 
-#testimonials .quote-row {
+#testimonials .quote {
+  position: relative;
+  background: #fff;
+  padding: 10px;
+  margin-top: 10px;
+  font-size: 16px;
+  font-style: italic;
+  border-radius: 5px;
+}
+
+#testimonials .quote.selected {
+  border-left: solid 5px #fc9462;
+}
+
+#testimonials .quote.selected .quote-text {
+  font-weight: 700;
+}
+
+#testimonials .quote.selected .quote-date {
+  display: none;
+}
+
+#testimonials .quote.selected .options-footer {
+  text-align: right;
+  margin-top: 15px;
+}
+#testimonials .quote.selected label{
+  font-weight: 100;
+}
+
+#testimonials .quote-satisfaction-options {
+  padding-left: 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;  
+}
+
+#testimonials .quote-satisfaction-options textarea {
+  border: solid 1px lightgray;
+  border-radius: 5px;
+  width: 100%;
+  margin-top: 10px;
+  padding: 5px 10px
+}
+
+#testimonials .quote-satisfaction-options .row {
+  margin-left: 0;
+}
+
+#testimonials .quote-satisfaction-options input[name=satisfactionOptRadio] {
+  margin-right: 5px;
+}
+
+#testimonials .quote b {
+  display: inline-block;
+  font-size: 22px;
+  left: -9px;
+  position: relative;
+  top: -8px;
+}
+
+#testimonials .quote small {
+  display: inline-block;
+  right: -9px;
+  position: relative;
+  top: 4px;
+}
+
+#testimonials .quote-row .quote {
   cursor: pointer;
 }
 
@@ -18,19 +85,19 @@
 }
 
 #testimonials .quote.compliment-quote {
-  border-left: solid 5px #008b76;
+  /*border-left: solid 5px #008b76;*/
 }
 
 #testimonials .quote.question-quote {
-  border-left: solid 5px #fc9462;
+  /*border-left: solid 5px #fc9462;*/
 }
 
 #testimonials .quote.critic-quote {
-  border-left: solid 5px #b6313e;
+  /*border-left: solid 5px #b6313e;*/
 }
 
 #testimonials .quote.suggestion-quote {
-  border-left: solid 5px #0099cc;
+  /*border-left: solid 5px #0099cc;*/
 }
 
 #testimonials .quote.disliked-quote {

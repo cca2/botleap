@@ -154,6 +154,24 @@
           <div class="question-quote quote">
             <span class="quote-text"> {{ text }}</span>
             <span class="quote-date">desde {{date}}</span>
+            <div class="quote-satisfaction-options">
+              <div class="row">
+                <label><input type="radio" name="satisfactionOptRadio" value="satisfied" checked> estou satisfeito com a ação da equipe</label>    
+              </div>
+              <div class="row">
+                <label><input type="radio" name="satisfactionOptRadio" value="notSatisfied"> não estou satisfeito com a ação da equipe</label>    
+              </div>
+              <div class="row">
+                <label><input type="radio" name="satisfactionOptRadio" value="actionNotUnderstood"> a equipe não entendeu o feedback</label>
+              </div>        
+              <textarea visibility="false" rows="3"></textarea>
+
+        <div class="options-footer">
+          <button type="button" class="btnSaveFeedbackSatisfactionOption btn btn-primary">Arquivar</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        </div>
+
+            </div>
           </div>
         </div>
       </div>
@@ -329,20 +347,38 @@
   <script type="text/javascript">
     var feedbackID
 
+    $('.quote-satisfaction-options').hide()
+
     $(function() {
 
-      $('#testimonials .quote-row').click(function(event) {
+      $('#testimonials .quote-row .quote').click(function(event) {
         var title = $(this).find('.quote-text').text()
         feedbackID = $(this).attr('value')
 
-        $('.modal-title .feedback-text').text(title)
-        $('#satisfaction-options-modal').modal('show')
+        // $('.modal-title .feedback-text').text(title)
+        // $('#satisfaction-options-modal').modal('show')
+        // $('.quote').hide()
+        $('.quote').removeClass('selected')
+        $(this).toggleClass('selected')
+        $('.quote-satisfaction-options').hide()
+        $(this).show()
+        $(this).find('.quote-satisfaction-options').show()
+
       })
 
       $('#satisfaction-options-modal').on('show.bs.modal', function() {
         $('#saveFeedbackSatisfactionButton').prop('disabled', true)
         $('#satisfaction-options-modal textarea').hide()
         $('input[name=satisfactionOptRadio]').prop('checked', false)
+      })
+
+      $('.btnSaveFeedbackSatisfactionOption').click(function() {
+        var $quote = $(this).parents('.quote')
+        console.log($quote)
+        console.log('>>> 100 <<<')
+        $quote.toggleClass('selected')
+        console.log($quote.find('.quote-text').text())
+        $(this).parents('.quote-row').remove()
       })
 
       $('#saveFeedbackSatisfactionButton').click(function() {
