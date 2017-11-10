@@ -41,3 +41,14 @@
 #testimonials .quote.liked-quote {
   background: #90ee9059;
 }
+
+#modal-satisfaction-options {
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+
+#satisfaction-options-modal textarea {
+  width: 100%;
+  border: 0px;
+  outline: none;
+}
