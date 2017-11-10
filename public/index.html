@@ -142,7 +142,7 @@
       <div class="quote-row row">
         <div class="col-md-9">
           <div class="compliment-quote quote">
-            <span><input type="radio" name="optradio"> <span class="quote-text">{{ text }}</span></span>
+            <span class="quote-text">{{ text }}</span>
             <span class="quote-date">desde {{date}}</span>
           </div>
         </div>
@@ -152,7 +152,7 @@
       <div class="quote-row row">
         <div class="col-md-9">
           <div class="question-quote quote">
-            <input type="radio" name="optradio" data-toggle="modal" data-target="#satisfaction-options-modal"> <span class="quote-text"> {{ text }}</span>
+            <span class="quote-text"> {{ text }}</span>
             <span class="quote-date">desde {{date}}</span>
           </div>
         </div>
@@ -162,7 +162,7 @@
       <div class="quote-row row">
         <div class="col-md-9">
           <div class="critic-quote quote">
-            <span><input type="radio" name="optradio"> <span class="quote-text">{{ text }}</span></span>
+            <span class="quote-text">{{ text }}</span>
             <span class="quote-date">desde {{date}}</span>
           </div>
         </div>
@@ -171,8 +171,7 @@
       {{ #suggestions }}
       <div class="quote-row row">
         <div class="col-md-9">
-          <div class="suggestion-quote quote">
-            <input type="radio" name="optradio" data-toggle="modal" data-target="#satisfaction-options-modal"> 
+          <div class="suggestion-quote quote">            
             <span class="quote-text"> {{ text }}</span>
             <span class="quote-date">desde {{date}}</span>
           </div>
@@ -327,34 +326,20 @@
   <script src="contactform/contactform.js"></script>
 
   <script type="text/javascript">
-    $('#testimonials .quote .button-like').click(function(event) {
-      var $button = $(this)
-      var $quoteParent = $button.parents('.quote')
-      $quoteParent.removeClass('disliked-quote')
-      $quoteParent.toggleClass('liked-quote')
+    $('#testimonials .quote').click(function(event) {
+      $('#satisfaction-options-modal').modal('show')
     })
-
-    $('#testimonials .quote .button-dislike').click(function(event) {
-      var $button = $(this)
-      var $quoteParent = $button.parents('.quote')
-      $quoteParent.removeClass('liked-quote')
-      $quoteParent.toggleClass('disliked-quote')
-    })
-
-    function likeOrDislikeFeedback(like) {
-      console.log(like)
-    }
 
     $(function() {
-      $('#satisfaction-options-modal textarea').hide()
       $('input:radio[name=satisfactionOptRadio]').change(function() {
         var $radio = $(this)
-        console.log($radio)
-        console.log($radio.val())
         if ($radio.val() == 'satisfied') {
-          $('#satisfaction-options-modal textarea').hide()
+        }else if ($radio.val() == 'notSatisfied') {
+          $('#satisfaction-options-modal textarea').attr('placeholder', 'Ex: não estou satisfeito porque ...')
+          $('#satisfaction-options-modal textarea').val('')
+          $('#satisfaction-options-modal textarea').focus()
         }else {
-          $('#satisfaction-options-modal textarea').show()
+          $('#satisfaction-options-modal textarea').attr('placeholder', 'Ex: o feedback não foi entendido porque...')
           $('#satisfaction-options-modal textarea').val('')
           $('#satisfaction-options-modal textarea').focus()
         }
