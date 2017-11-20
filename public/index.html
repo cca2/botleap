@@ -144,6 +144,14 @@
           <div class="compliment-quote quote">
             <span class="quote-text">{{ text }}</span>
             <span class="quote-date">desde {{date}}</span>
+            <div class="quote-satisfaction-options">
+              <textarea visibility="false" rows="3"></textarea>
+
+              <div class="options-footer">
+                <button type="button" class="btnSaveFeedbackSatisfactionOption btn btn-primary">Arquivar</button>
+                <button type="button" class="btn-close-feedback-satisfaction btn btn-secondary" data-dismiss="modal">Fechar</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -170,7 +178,6 @@
                 <button type="button" class="btnSaveFeedbackSatisfactionOption btn btn-primary">Arquivar</button>
                 <button type="button" class="btn-close-feedback-satisfaction btn btn-secondary" data-dismiss="modal">Fechar</button>
               </div>
-
             </div>
           </div>
         </div>
@@ -182,6 +189,23 @@
           <div class="critic-quote quote">
             <span class="quote-text">{{ text }}</span>
             <span class="quote-date">desde {{date}}</span>
+            <div class="quote-satisfaction-options">
+              <div class="row">
+                <label><input type="radio" name="satisfactionOptRadio{{key}}" value="satisfied" checked="checked"> estou satisfeito com a ação da equipe</label>    
+              </div>
+              <div class="row">
+                <label><input type="radio" name="satisfactionOptRadio{{key}}" value="notSatisfied"> não estou satisfeito com a ação da equipe</label>    
+              </div>
+              <div class="row">
+                <label><input type="radio" name="satisfactionOptRadio{{key}}" value="actionNotUnderstood"> a equipe não entendeu o feedback</label>
+              </div>        
+              <textarea visibility="false" rows="3"></textarea>
+
+              <div class="options-footer">
+                <button type="button" class="btnSaveFeedbackSatisfactionOption btn btn-primary">Arquivar</button>
+                <button type="button" class="btn-close-feedback-satisfaction btn btn-secondary" data-dismiss="modal">Fechar</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -192,6 +216,23 @@
           <div class="suggestion-quote quote">            
             <span class="quote-text"> {{ text }}</span>
             <span class="quote-date">desde {{date}}</span>
+            <div class="quote-satisfaction-options">
+              <div class="row">
+                <label><input type="radio" name="satisfactionOptRadio{{key}}" value="satisfied" checked="checked"> estou satisfeito com a ação da equipe</label>    
+              </div>
+              <div class="row">
+                <label><input type="radio" name="satisfactionOptRadio{{key}}" value="notSatisfied"> não estou satisfeito com a ação da equipe</label>    
+              </div>
+              <div class="row">
+                <label><input type="radio" name="satisfactionOptRadio{{key}}" value="actionNotUnderstood"> a equipe não entendeu o feedback</label>
+              </div>        
+              <textarea visibility="false" rows="3"></textarea>
+
+              <div class="options-footer">
+                <button type="button" class="btnSaveFeedbackSatisfactionOption btn btn-primary">Arquivar</button>
+                <button type="button" class="btn-close-feedback-satisfaction btn btn-secondary" data-dismiss="modal">Fechar</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -350,7 +391,10 @@
     $('.quote-satisfaction-options').hide()
     $('.quote').first().addClass('selected')
 
+
     $(function() {
+
+      // $('#testimonials .quote-row .quote').first().css('outline', 'none !important').attr('tabindex', -1).focus()
 
       $('#testimonials .quote-row .quote').click(function(event) {
         var title = $(this).find('.quote-text').text()
@@ -364,6 +408,10 @@
         $('.quote-satisfaction-options').hide()
         $(this).show()
         $(this).find('.quote-satisfaction-options').show()
+      })
+
+      $('#testimonials .quote-row .quote').keydown(function(event) {
+        console.log('>>> 100 <<<')
       })
 
       $('.btn-close-feedback-satisfaction').click(function(event) {
@@ -381,11 +429,10 @@
 
       $('.btnSaveFeedbackSatisfactionOption').click(function() {
         var $quote = $(this).parents('.quote')
-        console.log($quote)
-        console.log('>>> 100 <<<')
         $quote.toggleClass('selected')
         console.log($quote.find('.quote-text').text())
         $(this).parents('.quote-row').remove()
+        $('.quote').first().addClass('selected')
       })
 
       $('#saveFeedbackSatisfactionButton').click(function() {
