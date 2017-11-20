@@ -156,19 +156,19 @@
             <span class="quote-date">desde {{date}}</span>
             <div class="quote-satisfaction-options">
               <div class="row">
-                <label><input type="radio" name="satisfactionOptRadio" value="satisfied" checked> estou satisfeito com a ação da equipe</label>    
+                <label><input type="radio" name="satisfactionOptRadio{{key}}" value="satisfied" checked="checked"> estou satisfeito com a ação da equipe</label>    
               </div>
               <div class="row">
-                <label><input type="radio" name="satisfactionOptRadio" value="notSatisfied"> não estou satisfeito com a ação da equipe</label>    
+                <label><input type="radio" name="satisfactionOptRadio{{key}}" value="notSatisfied"> não estou satisfeito com a ação da equipe</label>    
               </div>
               <div class="row">
-                <label><input type="radio" name="satisfactionOptRadio" value="actionNotUnderstood"> a equipe não entendeu o feedback</label>
+                <label><input type="radio" name="satisfactionOptRadio{{key}}" value="actionNotUnderstood"> a equipe não entendeu o feedback</label>
               </div>        
               <textarea visibility="false" rows="3"></textarea>
 
               <div class="options-footer">
                 <button type="button" class="btnSaveFeedbackSatisfactionOption btn btn-primary">Arquivar</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn-close-feedback-satisfaction btn btn-secondary" data-dismiss="modal">Fechar</button>
               </div>
 
             </div>
@@ -363,7 +363,13 @@
         $('.quote-satisfaction-options').hide()
         $(this).show()
         $(this).find('.quote-satisfaction-options').show()
+      })
 
+      $('.btn-close-feedback-satisfaction').click(function(event) {
+        event.stopPropagation()
+        var $quoteSatisfactionOptions = $(this).parents('.quote-satisfaction-options')
+        console.log($quoteSatisfactionOptions)
+        $quoteSatisfactionOptions.hide()
       })
 
       $('#satisfaction-options-modal').on('show.bs.modal', function() {
