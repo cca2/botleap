@@ -41,6 +41,10 @@
   margin-bottom: 10px;  
 }
 
+#testimonials .quote-satisfaction-options .satisfaction-option-text {
+  margin-left: 10px;
+}
+
 #testimonials .quote-satisfaction-options textarea {
   border: solid 1px lightgray;
   border-radius: 5px;
