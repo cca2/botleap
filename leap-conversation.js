@@ -65,23 +65,27 @@ natural_language_classifier.status({
 //IBM Watson Conversation Service
 var Conversation = require('watson-developer-cloud/conversation/v1'); // watson sdk
 
-var conversation = new Conversation ({
+//Este conversation só está sendo utilizado para atualizar informações sobre novas startups
+var conversationMain = new Conversation ({
   	"username": "f6054751-7f2a-49a3-865c-af235131c8a8",
   	"password": "edcFkzIApvhR",
 	"version_date": "2017-05-26"
 });
 
+var conversationsByUserId = {}
+
 var workspaceId = '3816d525-def0-483b-8692-997bfa31121d';
 var membersDict = {}
 var slackTeamId
 
-var Leap = (function() {
+var Leap = (function() {	
 	return {
 		updateStartupNames: updateStartupNames,
 		updateMembersListFromSlack: updateMembersListFromSlack,
 		classifyComments: classifyComments,
 		getStartupIdByName: getStartupIdByName,
 		monitorNewStartups: monitorNewStartups,
+		conversationsByUserId: conversationsByUserId,
 
 		appendCommentsToGoogleSpreadsheet: function(comments) {
 			request.post(
@@ -94,6 +98,16 @@ var Leap = (function() {
 			        }
 			    }
 			);
+		},
+
+		newConversation: function(userId) {
+			var newConversation = new Conversation ({
+			  	"username": "f6054751-7f2a-49a3-865c-af235131c8a8",
+			  	"password": "edcFkzIApvhR",
+				"version_date": "2017-05-26"
+			})
+
+			conversationsByUserId[userId] = newConversation
 		},
 		
 		test: function(startupName, writer, commentsList) {
@@ -152,9 +166,6 @@ var Leap = (function() {
 						// 	author: comments[commentKey].author
 						// }
 					})
-
-					console.log('>>> 400 <<<')
-					console.log(commentsDict)
 
 					Object.keys(commentsDict).forEach(function(startupKey) {
 						var commentsByDate = commentsDict[startupKey]
@@ -307,7 +318,6 @@ var Leap = (function() {
 				})
 				return firebase.database().ref().update(updates).then(function() {
 				console.log('>>> 400 <<<')
-				console.log(commentsToSave)
 					return commentsToSave
 				})
 			})
@@ -516,7 +526,6 @@ var Leap = (function() {
 					}else {
 						var members = list.members
 						for (var i = 0; i < members.length; i++) {
-							console.log(members[i].profile.name) 
 							if (members[i].profile.email) {
 								var member = {
 									name: members[i].profile.real_name,
@@ -850,9 +859,11 @@ var Leap = (function() {
 			});
 		},
 
-		sendMessage: function(text, context, responseFunc) {
+		sendMessage: function(userId, text, context, responseFunc) {
 			console.log ('>>> 250 <<<')
-			console.log(text)
+			console.log(context)
+
+			var conversation = conversationsByUserId[userId]
 			conversation.message({
 			  workspace_id: workspaceId,
 			  input: {'text': text},
@@ -950,6 +961,8 @@ function updateMembersListFromSlack (teamId, members) {
 function monitorNewStartups () {
 	// Monitorar a criação de novas startups
 	var startups = firebase.database().ref('/startups');
+
+	console.log('>>> monitorNewStartups <<<')
 	
 	return startups.on('value', function(snapshot) {
 		startupsDict = snapshot.val();
@@ -1006,9 +1019,6 @@ function monitorNewStartups () {
 }
 
 function updateStartupNames(names, responseFunc) {
-	console.log('>>> updateStartupNames <<<')
-	console.log(names)
-
 	var params = {
 	  workspace_id: workspaceId,
 	  old_entity: 'startup-name',
@@ -1017,7 +1027,7 @@ function updateStartupNames(names, responseFunc) {
 	  values: names
 	};
 
-	conversation.updateEntity(params, function(err, response) {
+	conversationMain.updateEntity(params, function(err, response) {
 		responseFunc(err, response)
 	});			
 }

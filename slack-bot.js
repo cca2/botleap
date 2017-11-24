@@ -52,7 +52,6 @@ var SlackBot = (function() {
     },
 
     registerSlackBotToken: function(teamID, slackBotToken) {
-      console.log('>>> 800')
       var updates = {}
 
       updates['slack_teams/' + teamID + '/slackBotToken'] = slackBotToken
@@ -81,6 +80,7 @@ var SlackBot = (function() {
 
 
       let context = {};
+      let contextsByUserId = {}
 
       let slackTeamId
 
@@ -98,11 +98,11 @@ var SlackBot = (function() {
 
       rtm.on(RTM_EVENTS.MESSAGE, function handleRtmMessage(message) {
         var workspace = process.env.WORKSPACE_ID || '<workspace-id>';
-        var payload = {
-          workspace_id: workspace,
-          context: {},
-          input: {'text': message.text}
-        };
+        // var payload = {
+        //   workspace_id: workspace,
+        //   context: {},
+        //   input: {'text': message.text}
+        // };
 
         // Send the input to the conversation service
         var isBotChannel = false
@@ -110,13 +110,29 @@ var SlackBot = (function() {
           isBotChannel = true
 
         if ((message.username != 'projetaobot' && message.username != 'leapbot' && message.username != 'leapacademy') && isBotChannel) {
-          Leap.sendMessage(message.text, context, function(err, response) {
+          console.log('>>> 800')
+          console.log(message)
+
+          var userId = message.user
+
+          if (!Leap.conversationsByUserId[userId]) {
+            Leap.newConversation(userId)
+          }
+
+          console.log(Leap.conversationsByUserId)
+
+          if (!contextsByUserId[userId]) {
+            contextsByUserId[userId] = {}
+          }
+
+          // Leap.sendMessage(userId, message.text, context, function(err, response) {
+            Leap.sendMessage(userId, message.text, contextsByUserId[userId], function(err, response) {
               if (err) {
                 console.log('error:', err);
               }else {
                 context = response.context;
+                contextsByUserId[userId] = context
                 console.log('>>> 100 <<<')
-                console.log(context.action)
                 if (!context.action || context.action == '') {
                   console.log('>>> 110 <<<')
                   web.chat.postMessage(message.channel, response.output.text[0], true, function(err, messageResponse) {
@@ -164,12 +180,10 @@ var SlackBot = (function() {
                   })
                 }else if (context.action == 'action_include_member_in_startup') {
                   context.action = ''
-                  console.log('>>> 800')
                   var memberToAddId = context.memberToAddId
                   var startupName = context.startupName
                   if (memberToAddId) {
                     memberToAddId = memberToAddId.substring(2,11)
-                    console.log(memberToAddId)
                     Leap.includeMemberInStartup(slackTeamId, startupName, memberToAddId).then(function() {
                       web.chat.postMessage(message.channel, response.output.text[0], true, function(err, messageResponse) {
                         if (err) {
@@ -182,14 +196,11 @@ var SlackBot = (function() {
                   }
                 }else if (context.action == 'action_remove_member_from_startup') {
                   context.action = ''
-                  console.log('>>> 800')
                   var memberToRemoveID = context.memberToRemoveID
                   var startupName = context.startupName
                   if (memberToRemoveID) {
                     memberToRemoveID = memberToRemoveID.substring(2,11)
                     var memberName = Leap.getMemberNameById(slackTeamId, memberToRemoveID)
-                    console.log(memberToRemoveID)
-                    console.log(memberName)
                     Leap.removeMemberFromStartup(slackTeamId, startupName, memberToRemoveID).then(function() {
                       var text = response.output.text[0].replace('MEMBER_NAME', memberName)
                       web.chat.postMessage(message.channel, text, true, function(err, messageResponse) {
@@ -257,7 +268,6 @@ var SlackBot = (function() {
                 }else if (context.action == 'action_list_startups') {
                   context.action = ''
                   var startupsList = Leap.listStartups(slackTeamId)
-                  console.log(startupsList)
                   var attachments = []
                   for (var i = 0; i < startupsList.length; i++) {
                       var attachment = {
@@ -298,8 +308,6 @@ var SlackBot = (function() {
                         if (err) {
 
                         }else {
-                          console.log('>>> 500 <<<')
-                          console.log(commentsSaved)                    
                           Leap.appendCommentsToGoogleSpreadsheet(commentsSaved)
                         }
                       })              
@@ -309,9 +317,6 @@ var SlackBot = (function() {
                   context.action = ''
                   // Leap.classifyComments(context.startupName).then(function(commentsList) {
                   Leap.listFeedbacks(context.startupName).then(function(commentsList) {
-                    console.log('>>> 500 <<<')
-                    console.log(commentsList)
-
                     var attachments = []
 
                     if (commentsList.length == 0) {
@@ -346,8 +351,6 @@ var SlackBot = (function() {
 
                       localeDate = dStr + '/' + mStr + '/' + yStr
 
-                      console.log(localeDate)
-
                       if (!commentsByDates[localeDate]) {
                         commentsByDates[localeDate] = {}
                         commentsByDates[localeDate]['compliments'] = []                   
@@ -363,7 +366,6 @@ var SlackBot = (function() {
                         var commentsByAuthor = commentsByAuthors[commentKey]
                         Object.keys(commentsByAuthor).forEach(function(commentKey) {
                           var comment = commentsByAuthor[commentKey]
-                          console.log(comment)
                           if (comment.topClass == 'CRITICA') {
                             commentsByDates[localeDate]['critics'].push({author: commentKey, comment: comment})
                           }else if (comment.topClass == 'ELOGIO') {
@@ -379,8 +381,6 @@ var SlackBot = (function() {
 
                     Object.keys(commentsByDates).forEach(function(date) {
                       var dateComments = commentsByDates[date]
-                      console.log('>>> 700 <<<')
-                      console.log(date)
                         var attachment = {
                           "title": "Feedbacks em " + date,
                             "color": "#181818"
@@ -463,7 +463,6 @@ var SlackBot = (function() {
                 }else if (context.action == 'action_list_comments') {
                   context.action = ''
                   Leap.listFeedbacks(context.startupName).then(function(commentsList) {
-                    console.log(commentsList)
                     var attachments = []
 
                     commentsList.forEach(function(comments) {
@@ -471,7 +470,6 @@ var SlackBot = (function() {
                       var localeDate = brDate.getDate() + '/' + brDate.getMonth() + '/' + brDate.getYear()
                       var commentsByAuthors = comments.authors
                       Object.keys(commentsByAuthors).forEach(function(authorKey) {
-                        console.log(authorKey)
                         var authorName = Leap.getMemberNameById(slackTeamId, authorKey)
                       })                                                          
                       
