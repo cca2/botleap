@@ -143,7 +143,7 @@
         <div class="col-md-9">
           <div class="compliment-quote quote">
             <span class="quote-text">{{ text }}</span>
-            <span class="quote-date">desde {{date}}</span>
+            <span class="quote-date">{{date}}</span>
             <div class="quote-satisfaction-options">
               <textarea visibility="false" rows="3"></textarea>
 
@@ -161,7 +161,7 @@
         <div class="col-md-9">
           <div class="question-quote quote">
             <span class="quote-text"> {{ text }}</span>
-            <span class="quote-date">desde {{date}}</span>
+            <span class="quote-date">{{date}}</span>
             <div class="quote-satisfaction-options">
               <div class="row">
                 <label><input type="radio" name="satisfactionOptRadio{{key}}" value="satisfied" checked="checked"><span class="satisfaction-option-text">estou satisfeito com a ação da equipe</span></label>    
@@ -188,7 +188,7 @@
         <div class="col-md-9">
           <div class="critic-quote quote">
             <span class="quote-text">{{ text }}</span>
-            <span class="quote-date">desde {{date}}</span>
+            <span class="quote-date">{{date}}</span>
             <div class="quote-satisfaction-options">
               <div class="row">
                 <label><input type="radio" name="satisfactionOptRadio{{key}}" value="satisfied" checked="checked"><span class="satisfaction-option-text">estou satisfeito com a ação da equipe</span></label>    
@@ -215,7 +215,7 @@
         <div class="col-md-9">
           <div class="suggestion-quote quote">            
             <span class="quote-text"> {{ text }}</span>
-            <span class="quote-date">desde {{date}}</span>
+            <span class="quote-date">{{date}}</span>
             <div class="quote-satisfaction-options">
               <div class="row">
                 <label><input type="radio" name="satisfactionOptRadio{{key}}" value="satisfied" checked="checked"><span class="satisfaction-option-text">estou satisfeito com a ação da equipe</span></label>    
@@ -379,6 +379,7 @@
   <script src="lib/wow/wow.min.js"></script>
   <script src="lib/stickyjs/sticky.js"></script>
   <script src="lib/easing/easing.js"></script>
+  <script src="lib/momentjs/moment.min.js"></script>
 
   <!-- Template Specisifc Custom Javascript File -->
   <script src="js/custom.js"></script>
@@ -395,7 +396,13 @@
     $(function() {
 
       // $('#testimonials .quote-row .quote').first().css('outline', 'none !important').attr('tabindex', -1).focus()
-
+      //Atualizar o número de dias
+      $.each($('.quote-date'), function() {
+        var today = moment()
+        var date = moment($(this).text(), 'DD/MM/YYYY')        
+        $(this).text(today.diff(date,'days'))    
+      })
+      //
       $('#testimonials .quote-row .quote').click(function(event) {
         var title = $(this).find('.quote-text').text()
         feedbackID = $(this).attr('value')
