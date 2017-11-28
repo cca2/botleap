@@ -143,10 +143,12 @@
         <div class="col-md-9">
           <div class="compliment-quote quote">
             <span class="quote-text">{{ text }}</span>
-            <span class="quote-date">{{date}}</span>
+            <div class="quote-date-and-days">
+              <span class="quote-date">{{date}}</span>
+              <span class="quote-days">dias</span>
+            </div>
             <div class="quote-satisfaction-options">
               <textarea visibility="false" rows="3"></textarea>
-
               <div class="options-footer">
                 <button type="button" class="btnSaveFeedbackSatisfactionOption btn btn-primary">Arquivar</button>
                 <button type="button" class="btn-close-feedback-satisfaction btn btn-secondary" data-dismiss="modal">Fechar</button>
@@ -161,7 +163,10 @@
         <div class="col-md-9">
           <div class="question-quote quote">
             <span class="quote-text"> {{ text }}</span>
-            <span class="quote-date">{{date}}</span>
+            <div class="quote-date-and-days">
+              <span class="quote-date">{{date}}</span>
+              <span class="quote-days">dias</span>
+            </div>
             <div class="quote-satisfaction-options">
               <div class="row">
                 <label><input type="radio" name="satisfactionOptRadio{{key}}" value="satisfied" checked="checked"><span class="satisfaction-option-text">estou satisfeito com a ação da equipe</span></label>    
@@ -188,7 +193,10 @@
         <div class="col-md-9">
           <div class="critic-quote quote">
             <span class="quote-text">{{ text }}</span>
-            <span class="quote-date">{{date}}</span>
+            <div class="quote-date-and-days">
+              <span class="quote-date">{{date}}</span>
+              <span class="quote-days">dias</span>
+            </div>
             <div class="quote-satisfaction-options">
               <div class="row">
                 <label><input type="radio" name="satisfactionOptRadio{{key}}" value="satisfied" checked="checked"><span class="satisfaction-option-text">estou satisfeito com a ação da equipe</span></label>    
@@ -215,7 +223,10 @@
         <div class="col-md-9">
           <div class="suggestion-quote quote">            
             <span class="quote-text"> {{ text }}</span>
-            <span class="quote-date">{{date}}</span>
+            <div class="quote-date-and-days">
+              <span class="quote-date">{{date}}</span>
+              <span class="quote-days">dias</span>
+            </div>
             <div class="quote-satisfaction-options">
               <div class="row">
                 <label><input type="radio" name="satisfactionOptRadio{{key}}" value="satisfied" checked="checked"><span class="satisfaction-option-text">estou satisfeito com a ação da equipe</span></label>    

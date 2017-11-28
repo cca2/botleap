@@ -31,8 +31,13 @@
   text-align: right;
   margin-top: 15px;
 }
+
 #testimonials .quote.selected label{
   font-weight: 100;
+}
+
+#testimonials .quote.selected .quote-date-and-days {
+  max-height: 50px;
 }
 
 #testimonials .quote-satisfaction-options {
@@ -80,12 +85,36 @@
   cursor: pointer;
 }
 
-#testimonials .quote .quote-date {
+#testimonials .quote-row .quote .quote-text {
+  padding-right: 50px;
+}
+
+#testimonials .quote .quote-date-and-days {
   position: absolute;
-  bottom: 2px;
-  right: 10px;
-  font-size: 10px;
-  color: #03c5eb78;
+  text-align: center;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  border-radius: 0 5px 5px 0;
+  width: 50px;
+  background: #111111;
+}
+
+#testimonials .quote .quote-date-and-days .quote-date {
+  /*position: absolute;*/
+  /*bottom: 2px;*/
+  /*right: 10px;*/
+  font-size: 22px;
+  /*color: #03c5eb78;*/
+  color: #fff;
+  display: block;
+}
+
+#testimonials .quote-row .quote-date-and-days .quote-days {
+  position: relative;
+  top: -10px;
+  color: #fff;  
+  font-size: xx-small;
 }
 
 #testimonials .quote.compliment-quote {
