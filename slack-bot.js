@@ -135,6 +135,7 @@ var SlackBot = (function() {
                 console.log('>>> 100 <<<')
                 if (!context.action || context.action == '') {
                   console.log('>>> 110 <<<')
+                  console.log(message)
                   web.chat.postMessage(message.channel, response.output.text[0], true, function(err, messageResponse) {
                     if (err) {
 
@@ -160,7 +161,7 @@ var SlackBot = (function() {
                   var result = Leap.updateStartupName(slackTeamId, startupName, newStartupName)
                   if (result) {
                     result.then(function() {
-                      Leap.sendMessage('', context, function(err, response) {
+                      Leap.sendMessage(userId, '', context, function(err, response) {
                         // web.chat.postMessage(message.channel, response.output.text[0], true, function(err, message) {
                         //   if (err) {
 
@@ -505,13 +506,32 @@ var SlackBot = (function() {
                       }
                     })              
                   })
+                }else if (context.action == 'action_add_new_blue_ocean_curve') {
+                  console.log('>>> 135 <<<')
+                  context.action = ''
+                  var key = Leap.addNewBlueOceanCurve(context.startupName, context.blueOceanCurveName, context.blueOceanCurveLink)
+                  if (key) {
+                    Leap.sendMessage(userId, '', context, function(err, response) {
+                      context['startupName'] = null
+                      web.chat.postMessage(message.channel, response.output.text[0], true, function(err, messageResponse) {
+                        if (err) {
+
+                        }else {
+
+                        }
+                      })
+                    })
+                  }else {
+                    console.log('>>> 140 <<<')
+                    console.log('Não conseguiu salvar curva de valor na base de dados')             
+                  }
                 }else if (context.action == 'action_add_new_canvas') {
                   console.log('>>> 125 <<<')
                   context.action = ''
                   var key = Leap.addNewCanvas(context.startupName, context.leanCanvasName, context.leanCanvasLink)
 
                   if (key) {
-                    Leap.sendMessage('', context, function(err, response) {
+                    Leap.sendMessage(userId, '', context, function(err, response) {
                       context['startupName'] = null
                       web.chat.postMessage(message.channel, response.output.text[0], true, function(err, messageResponse) {
                         if (err) {

@@ -765,6 +765,20 @@ var Leap = (function() {
 			return newCanvasKey
 		},
 
+		addNewBlueOceanCurve: function(startupName, curveName, curveLink) {
+			var startupId = startupsIdsByName[startupName]
+			var startupRef = database.ref('startups/' + startupId)
+			var blueOceanCurvesRef = startupRef.child('blue-ocean-curves')
+			var newCurveKey = blueOceanCurvesRef.push({
+				name: curveName,
+				link: curveLink,
+				active: false
+			}).key
+			return newCurveKey
+		},
+
+
+
 		listFeedbacks: function(startupName) {
 			var startupId = startupsIdsByName[startupName]
 			var commentsRef = database.ref('startups/' + startupId + '/feedbacks').orderByKey().limitToLast(1)
@@ -862,6 +876,7 @@ var Leap = (function() {
 		sendMessage: function(userId, text, context, responseFunc) {
 			console.log ('>>> 250 <<<')
 			console.log(context)
+			console.log(userId)
 
 			var conversation = conversationsByUserId[userId]
 			conversation.message({
