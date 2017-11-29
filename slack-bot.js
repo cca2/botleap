@@ -579,6 +579,40 @@ var SlackBot = (function() {
                       })                  
                     }
                   })
+                }else if (context.action == 'action_show_blue_ocean_curve_list') {
+                  console.log('>>> 120 <<<')
+                  context.action = ''
+                  var startupName = context['startupName']
+                  Leap.listBlueOceanCurves(startupName).then(function(curveList) {
+                    if (curveList.length > 0) {
+                      var attachments = []
+                      curveList.forEach(function(curve) {
+                          var attachment = {
+                              "title": curve.name,
+                              "title_link": curve.link,
+                              "text": curve.link,
+                              "color": "#7CD197"
+                          }
+                          attachments.push(attachment)                                
+                      })
+
+                      web.chat.postMessage(message.channel, response.output.text[0], {as_user: false, attachments: attachments}, function(err, messageResponse) {
+                        if (err) {
+                          console.log(err)
+                        }else {
+
+                        }
+                      })
+                    }else {
+                      web.chat.postMessage(message.channel, 'A startup *' + startupName + '* não possui curvas de valor!', {as_user: false, attachments: attachments}, function(err, messageResponse) {
+                        if (err) {
+                          console.log(err)
+                        }else {
+
+                        }
+                      })                  
+                    }
+                  })
                 }
                 // console.log(JSON.stringify(response, null, 2));            
             }     

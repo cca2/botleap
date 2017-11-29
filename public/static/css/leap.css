@@ -8,10 +8,10 @@
 #testimonials .quote {
   position: relative;
   background: #fff;
-  padding: 10px 55px 10px 10px;
+  padding: 10px 55px 10px 15px;
   margin-top: 10px;
-  font-size: 16px;
-  font-style: italic;
+  font-size: 14px;
+  /*font-style: italic;*/
   border-radius: 5px;
 }
 
@@ -97,7 +97,7 @@
   right: 0;
   border-radius: 0 5px 5px 0;
   width: 50px;
-  background: #111111;
+  background: #11111145;
 }
 
 #testimonials .quote .quote-date-and-days .quote-date {

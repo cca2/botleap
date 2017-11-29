@@ -814,6 +814,23 @@ var Leap = (function() {
   			})
 		},
 
+		listBlueOceanCurves: function(startupName) {
+			var startupId = startupsIdsByName[startupName]
+			var canvasRef = database.ref('startups/' + startupId + '/blue-ocean-curves')
+			return canvasRef.once('value').then(function(snapshot) {
+  				var canvasList = []
+  				var canvases = snapshot.val()
+				if (canvases) {
+  				var keys = Object.keys(canvases)
+	  				for (var i = 0; i < keys.length; i++) {
+	  					var canvas = canvases[keys[i]]
+	  					canvasList.push(canvas)
+	  				}
+				}  				
+  				return canvasList
+  			})
+		},
+
 		listEntrepreneurs: function(teamId) {
 			var slackTeamRef = firebase.database().ref('slack_teams/' + teamId)
 			return slackTeamRef.once('value').then(function(snapshot) {
