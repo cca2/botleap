@@ -148,10 +148,10 @@
               <span class="quote-days">dias</span>
             </div>
             <div class="quote-satisfaction-options">
-              <textarea visibility="false" rows="3"></textarea>
+              <textarea class="textarea-comment" visibility="false" rows="3"></textarea>
               <div class="options-footer">
                 <button type="button" class="btnSaveFeedbackSatisfactionOption btn btn-primary">Arquivar</button>
-                <button type="button" class="btn-close-feedback-satisfaction btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn-close-feedback-satisfaction btn btn-secondary">Fechar</button>
               </div>
             </div>
           </div>
@@ -177,11 +177,12 @@
               <div class="row">
                 <label><input type="radio" name="satisfactionOptRadio{{key}}" value="actionNotUnderstood"><span class="satisfaction-option-text">a equipe não entendeu o feedback</span></label>
               </div>        
-              <textarea visibility="false" rows="3"></textarea>
+              <textarea class="textarea-comment" visibility="false" rows="3"></textarea>
 
               <div class="options-footer">
+                <button type="button" class="btnSaveFeedbackSatisfactionOption btn btn-danger btn-primary">Apagar</button>
                 <button type="button" class="btnSaveFeedbackSatisfactionOption btn btn-primary">Arquivar</button>
-                <button type="button" class="btn-close-feedback-satisfaction btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn-close-feedback-satisfaction btn btn-secondary">Fechar</button>
               </div>
             </div>
           </div>
@@ -207,11 +208,11 @@
               <div class="row">
                 <label><input type="radio" name="satisfactionOptRadio{{key}}" value="actionNotUnderstood"><span class="satisfaction-option-text">a equipe não entendeu o feedback</span></label>
               </div>        
-              <textarea visibility="false" rows="3"></textarea>
+              <textarea class="textarea-comment" visibility="false" rows="3"></textarea>
 
               <div class="options-footer">
                 <button type="button" class="btnSaveFeedbackSatisfactionOption btn btn-primary">Arquivar</button>
-                <button type="button" class="btn-close-feedback-satisfaction btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn-close-feedback-satisfaction btn btn-secondary">Fechar</button>
               </div>
             </div>
           </div>
@@ -237,11 +238,11 @@
               <div class="row">
                 <label><input type="radio" name="satisfactionOptRadio{{key}}" value="actionNotUnderstood"><span class="satisfaction-option-text">a equipe não entendeu o feedback</span></label>
               </div>        
-              <textarea visibility="false" rows="3"></textarea>
+              <textarea class="textarea-comment" visibility="false" rows="3"></textarea>
 
               <div class="options-footer">
                 <button type="button" class="btnSaveFeedbackSatisfactionOption btn btn-primary">Arquivar</button>
-                <button type="button" class="btn-close-feedback-satisfaction btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn-close-feedback-satisfaction btn btn-secondary">Fechar</button>
               </div>
             </div>
           </div>
@@ -390,7 +391,7 @@
   <script src="lib/wow/wow.min.js"></script>
   <script src="lib/stickyjs/sticky.js"></script>
   <script src="lib/easing/easing.js"></script>
-  <script src="lib/momentjs/moment.min.js"></script>
+  <!-- <script src="lib/momentjs/moment.min.js"></script> -->
 
   <!-- Template Specisifc Custom Javascript File -->
   <script src="js/custom.js"></script>
@@ -410,7 +411,7 @@
       //Atualizar o número de dias
       $.each($('.quote-date'), function() {
         var today = moment()
-        var date = moment($(this).text(), 'DD/MM/YYYY')        
+        var date = moment($(this).text(), 'DD/MM/YYYY')
         $(this).text(today.diff(date,'days'))    
       })
       //
@@ -434,6 +435,14 @@
         var $quoteSatisfactionOptions = $(this).parents('.quote-satisfaction-options')
         console.log($quoteSatisfactionOptions)
         $quoteSatisfactionOptions.hide()
+      })
+
+      $('.textarea-comment').keydown(function(event) {
+        if (event.which == 27) {
+          var $quoteSatisfactionOptions = $(this).parents('.quote-satisfaction-options')
+          console.log($quoteSatisfactionOptions)
+          $quoteSatisfactionOptions.hide()
+        }
       })
 
       $('#satisfaction-options-modal').on('show.bs.modal', function() {
