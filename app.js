@@ -127,7 +127,8 @@ app.get('/', function(req, res) {
     datesSorted.forEach(function(key) {
       var dComments = feedbacks[key]
       var dayComments = {
-        date: new Date(feedbacks[key].date).toLocaleDateString('pt-BR'),
+        // date: new Date(feedbacks[key].date).toLocaleDateString('pt-BR'),
+        date: new Date(feedbacks[key].date).toString(),
         compliments: [],
         questions: [],
         critics: [],

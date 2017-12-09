@@ -411,9 +411,8 @@
       //Atualizar o número de dias
       $.each($('.quote-date'), function() {
         var today = moment()
-        var date = moment($(this).text(), 'DD/MM/YYYY')
-        // $(this).text(today.diff(date,'days'))    
-        // $(this).text(today)                
+        var date = moment($(this).text())
+        $(this).text(today.diff(date,'days'))    
       })
       //
       $('#testimonials .quote-row .quote').click(function(event) {
