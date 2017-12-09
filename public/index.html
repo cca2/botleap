@@ -412,7 +412,8 @@
       $.each($('.quote-date'), function() {
         var today = moment()
         var date = moment($(this).text(), 'DD/MM/YYYY')
-        $(this).text(today.diff(date,'days'))    
+        // $(this).text(today.diff(date,'days'))    
+        $(this).text(today)
       })
       //
       $('#testimonials .quote-row .quote').click(function(event) {
